@@ -185,8 +185,8 @@ const POLICIES = [
     name: "큰 관공서와 연구소 유치하기 🏢",
     desc: "다른 지역에 있는 공기업이나 국가 연구소를 우리 도시로 이사 오게 하여 좋은 일자리를 만듭니다.",
     effects: {
-      large: { budget: -45, population: -2.0, happiness: +5, news: "큰 기관의 지방 이전 발표! 대도시 붐빔 현상이 조금 줄어듭니다" },
-      medium: { budget: -30, population: +1.2, happiness: +10, news: "우리 도시에 새로운 공기업 유치 성공! 일하러 온 청년들로 도심이 들썩들썩" },
+      large: { budget: -60, population: -2.0, happiness: +5, news: "큰 기관의 지방 이전 발표! 대도시 붐빔 현상이 조금 줄어듭니다" },
+      medium: { budget: -40, population: +1.2, happiness: +10, news: "우리 도시에 새로운 공기업 유치 성공! 일하러 온 청년들로 도심이 들썩들썩" },
       small: { budget: -20, population: +2.0, happiness: +16, news: "소도시에 국가 연구소 준공! 박사님들이 대거 이사 와서 마을 인구 급증!" }
     }
   },
@@ -195,8 +195,8 @@ const POLICIES = [
     name: "컴퓨터·IT 회사 유치하기 💻",
     desc: "인터넷, 게임, 로봇을 만드는 유명한 컴퓨터 회사들이 들어설 수 있는 멋진 첨단 연구 단지를 짓습니다.",
     effects: {
-      large: { budget: -150, population: +3.5, happiness: -5, news: "첨단 테크노 단지 완공! 회사는 늘었지만 교통 체증으로 퇴근길 정체 심각" },
-      medium: { budget: -100, population: +2.2, happiness: +12, news: "게임 회사 대거 이사 완료! 젊은 직장인 유치로 도시 이미지 쇄신" },
+      large: { budget: -200, population: +3.5, happiness: -5, news: "첨단 테크노 단지 완공! 회사는 늘었지만 교통 체증으로 퇴근길 정체 심각" },
+      medium: { budget: -140, population: +2.2, happiness: +12, news: "게임 회사 대거 이사 완료! 젊은 직장인 유치로 도시 이미지 쇄신" },
       small: { budget: -50, population: +1.0, happiness: +8, news: "소도시 소형 특화 컴퓨터 지원 센터 건립! 청년 창업 발판 마련" }
     }
   },
@@ -205,8 +205,8 @@ const POLICIES = [
     name: "청년 상인과 동네 야시장 지원하기 🎨",
     desc: "청년 예술가와 창업가들이 낡은 골목이나 시장에서 이색 먹거리를 팔고 예쁜 가게를 열도록 돈을 대 줍니다.",
     effects: {
-      large: { budget: -20, population: +0.2, happiness: +12, news: "대도시 낡은 시장의 변신! 맛집 골목으로 청년들과 관광객 몰린다" },
-      medium: { budget: -12, population: +0.6, happiness: +15, news: "강가 공원에서 열린 청년 야시장 성황! 주말마다 맛있는 냄새와 버스킹 음악 솔솔" },
+      large: { budget: -30, population: +0.2, happiness: +12, news: "대도시 낡은 시장의 변신! 맛집 골목으로 청년들과 관광객 몰린다" },
+      medium: { budget: -20, population: +0.6, happiness: +15, news: "강가 공원에서 열린 청년 야시장 성황! 주말마다 맛있는 냄새와 버스킹 음악 솔솔" },
       small: { budget: -8, population: +1.0, happiness: +20, news: "버려진 시골 폐교가 핫플레이스 예술 카페로! 전국에서 놀러 오는 명물 낙점" }
     }
   },
@@ -215,8 +215,8 @@ const POLICIES = [
     name: "밤에도 여는 어린이 병원 세우기 🏥",
     desc: "밤이나 주말에 아이가 갑자기 아파도 멀리 가지 않고 곧바로 치료를 받을 수 있는 전용 병원을 유치합니다.",
     effects: {
-      large: { budget: -50, population: +0.5, happiness: +10, news: "밤늦게 아파도 걱정 끝! 24시간 안심 어린이 응급 병원 추가 개원 완료" },
-      medium: { budget: -38, population: +1.5, happiness: +15, news: "종합 의료 지원 센터 완공! 이사 오고 싶을 정도로 안심되는 안전 도시 구축" },
+      large: { budget: -75, population: +0.5, happiness: +10, news: "밤늦게 아파도 걱정 끝! 24시간 안심 어린이 응급 병원 추가 개원 완료" },
+      medium: { budget: -55, population: +1.5, happiness: +15, news: "종합 의료 지원 센터 완공! 이사 오고 싶을 정도로 안심되는 안전 도시 구축" },
       small: { budget: -25, population: +2.2, happiness: +22, news: "원정 병원 안 가도 된다! 소도시 첫 종합 응급 소아 센터 준공 감격" }
     }
   },
@@ -225,8 +225,8 @@ const POLICIES = [
     name: "컴퓨터와 친환경 숲이 있는 미래 학교 🏫",
     desc: "학교 건물에 인공지능 교실을 만들고, 태양광 발전기와 자연 숲이 어우러진 친환경 스마트 교실을 짓습니다.",
     effects: {
-      large: { budget: -42, population: +0.3, happiness: +8, news: "스마트 생태 학교 시범 지정! 가상현실 교실에서 전자기기로 재미있게 공부해요" },
-      medium: { budget: -32, population: +1.0, happiness: +12, news: "명품 학업 인프라 완성! 수준 높은 미래형 교실 도입으로 학부모 만족도 상승" },
+      large: { budget: -60, population: +0.3, happiness: +8, news: "스마트 생태 학교 시범 지정! 가상현실 교실에서 전자기기로 재미있게 공부해요" },
+      medium: { budget: -45, population: +1.0, happiness: +12, news: "명품 학업 인프라 완성! 수준 높은 미래형 교실 도입으로 학부모 만족도 상승" },
       small: { budget: -15, population: +1.8, happiness: +18, news: "폐교 위험 극복! 도시에서 거꾸로 전학 오는 소도시 작은 학교의 기적" }
     }
   },
@@ -235,8 +235,8 @@ const POLICIES = [
     name: "고향 사랑 기부금과 특산물 선물 💝",
     desc: "다른 지역에 사는 어른들에게 우리 도시를 응원하는 기부금을 받고, 감사로 맛있는 고장 특산물을 선물합니다.",
     effects: {
-      large: { budget: +8, population: 0, happiness: +2, news: "대도시 기부금 소폭 확보, 이색적인 답례품 알리기 경쟁 개시" },
-      medium: { budget: +20, population: +0.1, happiness: +6, news: "지역 특산품 사과와 쌀 불티나게 팔려! 농사짓는 주민들 세입 활짝" },
+      large: { budget: +5, population: 0, happiness: +2, news: "대도시 기부금 소폭 확보, 이색적인 답례품 알리기 경쟁 개시" },
+      medium: { budget: +12, population: +0.1, happiness: +6, news: "지역 특산품 사과와 쌀 불티나게 팔려! 농사짓는 주민들 세입 활짝" },
       small: { budget: +30, population: +0.3, happiness: +15, news: "기부금 폭발적 확보! 시청 예산에 보너스 30억 장착으로 주민 쉼터 짓는다" }
     }
   },
@@ -245,8 +245,8 @@ const POLICIES = [
     name: "도심 속 자연 공원과 맑은 시냇가 가꾸기 🌳",
     desc: "매연으로 퀴퀴해진 도심에 커다란 나무 숲 공원을 만들고, 더러워진 하천 물길을 깨끗하게 되살립니다.",
     effects: {
-      large: { budget: -65, population: -0.5, happiness: +18, news: "도심 한복판 대형 숲 정원 탄생! 미세먼지 마스크 벗고 주민들 산책" },
-      medium: { budget: -38, population: +0.4, happiness: +14, news: "생태 물길 산책로 완공! 걷기 좋은 물소리에 동네 강아지들도 신났다" },
+      large: { budget: -90, population: -0.5, happiness: +18, news: "도심 한복판 대형 숲 정원 탄생! 미세먼지 마스크 벗고 주민들 산책" },
+      medium: { budget: -55, population: +0.4, happiness: +14, news: "생태 물길 산책로 완공! 걷기 좋은 물소리에 동네 강아지들도 신났다" },
       small: { budget: -20, population: +0.8, happiness: +12, news: "청정 에코 습지 조성! 자연 체험 캠핑족 유치로 소도시 매력 뿜뿜" }
     }
   },
@@ -255,8 +255,8 @@ const POLICIES = [
     name: "시골로 이사 오는 분들을 위한 전원마을 🏡",
     desc: "시끄러운 도시를 떠나 조용하고 자연이 고운 시골에 정착하고 싶은 분들을 위해 은퇴 전원주택을 지원합니다.",
     effects: {
-      large: { budget: -28, population: -1.5, happiness: +5, news: "도시 은퇴 어르신들 지방 이사 선호! 도심 고령 정체 현상 완화에 도움" },
-      medium: { budget: -20, population: +0.8, happiness: +8, news: "숲세권 전원마을 입주 대성황! 조용한 자연을 찾는 귀촌 세대 정착" },
+      large: { budget: -40, population: -1.5, happiness: +5, news: "도시 은퇴 어르신들 지방 이사 선호! 도심 고령 정체 현상 완화에 도움" },
+      medium: { budget: -30, population: +0.8, happiness: +8, news: "숲세권 전원마을 입주 대성황! 조용한 자연을 찾는 귀촌 세대 정착" },
       small: { budget: -14, population: +1.8, happiness: +15, news: "소도시에 활기 불어넣는 귀농 주거지! 젊은 농업 희망자들이 찾아온다" }
     }
   },
@@ -265,8 +265,8 @@ const POLICIES = [
     name: "이웃 도시로 오가는 빠른 지하철과 버스 🚊",
     desc: "다른 큰 도시까지 막힘없이 가도록 전철을 놓고, 시내버스와 고속버스를 쉽게 골라타는 환승 정류장을 만듭니다.",
     effects: {
-      large: { budget: -140, population: +2.5, happiness: +10, news: "광역 환승 교통망 추가 개통! 외곽에서 출퇴근하는 사람들의 피로 싹 해결" },
-      medium: { budget: -85, population: +1.8, happiness: +8, news: "대도시 통학 급행 버스 개통! 대도시로 놀러 가기는 더 편해졌다?" },
+      large: { budget: -190, population: +2.5, happiness: +10, news: "광역 환승 교통망 추가 개통! 외곽에서 출퇴근하는 사람들의 피로 싹 해결" },
+      medium: { budget: -120, population: +1.8, happiness: +8, news: "대도시 통학 급행 버스 개통! 대도시로 놀러 가기는 더 편해졌다?" },
       small: { budget: -38, population: +0.8, happiness: +12, news: "소도시 방방곡곡 달리는 '100원 행복 택시' 도입! 할아버지 할머니 이동권 보장" }
     }
   },
@@ -275,8 +275,8 @@ const POLICIES = [
     name: "스스로 전기를 만드는 친환경 에너지 마을 ⚡",
     desc: "집 지붕마다 친환경 태양광 발전기를 올리고, 전기를 아끼는 똑똑한 스마트 동네를 시범적으로 짓습니다.",
     effects: {
-      large: { budget: -75, population: +0.5, happiness: +10, news: "에너지 자립 아파트 첫 준공! 전기요금을 직접 만들어 아끼는 친환경 단지" },
-      medium: { budget: -50, population: +0.8, happiness: +12, news: "전력 자급자족 성공! 전기료 대폭 하락! 스마트 그리드 기술 접목에 주민들 지갑 든든" },
+      large: { budget: -100, population: +0.5, happiness: +10, news: "에너지 자립 아파트 첫 준공! 전기요금을 직접 만들어 아끼는 친환경 단지" },
+      medium: { budget: -70, population: +0.8, happiness: +12, news: "전력 자급자족 성공! 전기료 대폭 하락! 스마트 그리드 기술 접목에 주민들 지갑 든든" },
       small: { budget: -26, population: +0.5, happiness: +10, news: "기후 위기 탈출! 환경을 아끼는 저탄소 청정 마을로 시골 동네 명성 획득" }
     }
   },
@@ -285,8 +285,8 @@ const POLICIES = [
     name: "문화 복지 센터 및 체육관 건립 🏟️",
     desc: "모든 시민이 다양한 취미 생활과 스포츠를 배울 수 있는 대형 문화 복지 체육 센터를 짓습니다.",
     effects: {
-      large: { budget: -60, population: +0.4, happiness: +14, news: "대형 문화 체육관 준공! 대도시 복합 문화 혜택에 시민들 환호" },
-      medium: { budget: -40, population: +0.8, happiness: +16, news: "중간도시에 공공 문화 예술 회관 건립! 취미 및 강좌 개설로 들썩" },
+      large: { budget: -85, population: +0.4, happiness: +14, news: "대형 문화 체육관 준공! 대도시 복합 문화 혜택에 시민들 환호" },
+      medium: { budget: -60, population: +0.8, happiness: +16, news: "중간도시에 공공 문화 예술 회관 건립! 취미 및 강좌 개설로 들썩" },
       small: { budget: -20, population: +1.2, happiness: +22, news: "소도시에 현대식 복지 체육 센터 건립! 어르신 건강교실 대성황" }
     }
   },
@@ -295,8 +295,8 @@ const POLICIES = [
     name: "동네 불량 간판 및 거리 환경 정비 사업 🎨",
     desc: "보기 흉하게 방치된 낡은 불량 간판들을 떼어내고 걷기 편한 예쁜 특색 거리를 조성합니다.",
     effects: {
-      large: { budget: -30, population: 0, happiness: +8, news: "깨끗해진 도심 빌딩 거리! 보기 흉한 낡은 간판 일제 교체로 품격 업그레이드" },
-      medium: { budget: -18, population: +0.2, happiness: +10, news: "거리 미관 정비 사업 대성황! 걷고 싶은 예쁜 특색 테마 골목길 탄생" },
+      large: { budget: -45, population: 0, happiness: +8, news: "깨끗해진 도심 빌딩 거리! 보기 흉한 낡은 간판 일제 교체로 품격 업그레이드" },
+      medium: { budget: -28, population: +0.2, happiness: +10, news: "거리 미관 정비 사업 대성황! 걷고 싶은 예쁜 특색 테마 골목길 탄생" },
       small: { budget: -9, population: +0.4, happiness: +12, news: "시골 마을 안길 벽화 정비 완료! 아기자기하고 화사한 동네로 대변신" }
     }
   },
@@ -305,8 +305,8 @@ const POLICIES = [
     name: "장애인·임산부 무장애 안심 보도블록 정비 ♿",
     desc: "유모차나 휠체어도 안전하게 오가도록 보도 턱을 낮추고, 시각장애인용 안전 바닥 타일을 설치합니다.",
     effects: {
-      large: { budget: -40, population: 0, happiness: +10, news: "휠체어도 유모차도 씽씽! 턱이 낮아진 안심 보행로 대폭 확대" },
-      medium: { budget: -25, population: +0.1, happiness: +12, news: "교통 약자를 위한 배려 장벽 철폐! 무장애 걷기 친화 명품 도시 발돋움" },
+      large: { budget: -55, population: 0, happiness: +10, news: "휠체어도 유모차도 씽씽! 턱이 낮아진 안심 보행로 대폭 확대" },
+      medium: { budget: -35, population: +0.1, happiness: +12, news: "교통 약자를 위한 배려 장벽 철폐! 무장애 걷기 친화 명품 도시 발돋움" },
       small: { budget: -12, population: +0.2, happiness: +15, news: "휠체어 탄 이웃도 외출이 쉬워졌어요! 소도시 첫 무장애 도보 정비 완료" }
     }
   },
@@ -315,8 +315,8 @@ const POLICIES = [
     name: "어두운 밤길 가로등 및 안심 CCTV 확충 🚨",
     desc: "아이들과 주민들이 어두운 골목길도 걱정 없이 다닐 수 있게 밝은 가로등을 더 놓고 감시 카메라를 더 답니다.",
     effects: {
-      large: { budget: -25, population: +0.2, happiness: +8, news: "대도시 밤거리 사각지대 완전 퇴치! 지능형 스마트 CCTV 대대적 확충" },
-      medium: { budget: -16, population: +0.4, happiness: +10, news: "밤길 안심 귀갓길 시스템 작동! 골목길 LED 보안등 올 교체" },
+      large: { budget: -35, population: +0.2, happiness: +8, news: "대도시 밤거리 사각지대 완전 퇴치! 지능형 스마트 CCTV 대대적 확충" },
+      medium: { budget: -25, population: +0.4, happiness: +10, news: "밤길 안심 귀갓길 시스템 작동! 골목길 LED 보안등 올 교체" },
       small: { budget: -8, population: +0.6, happiness: +12, news: "시골길 밤길이 밝아졌어요! 범죄 제로 안전 소마을 지향 인프라 장착" }
     }
   },
@@ -325,8 +325,8 @@ const POLICIES = [
     name: "로컬 푸드 직매장 및 농민 직거래 시장 육성 🍎",
     desc: "지역의 농가에서 기른 신선한 과일과 채소를 저렴하고 안전하게 직거래로 구입할 수 있는 전용 마켓을 짓습니다.",
     effects: {
-      large: { budget: -20, population: +0.1, happiness: +6, news: "신선한 산지 채소가 바로 밥상으로! 대도시 첫 대형 로컬푸드점 오픈" },
-      medium: { budget: -12, population: +0.4, happiness: +10, news: "우리 농가 돕고 신선함은 더하고! 중간도시 농민 마켓 인기 폭발" },
+      large: { budget: -30, population: +0.1, happiness: +6, news: "신선한 산지 채소가 바로 밥상으로! 대도시 첫 대형 로컬푸드점 오픈" },
+      medium: { budget: -20, population: +0.4, happiness: +10, news: "우리 농가 돕고 신선함은 더하고! 중간도시 농민 마켓 인기 폭발" },
       small: { budget: -6, population: +0.8, happiness: +16, news: "텃밭 채소 내다 파는 시골 장터 부흥! 지역 소규모 농민들의 활짝 핀 웃음" }
     }
   },
@@ -335,8 +335,8 @@ const POLICIES = [
     name: "이색 관광 출렁다리 및 수목원 숲 조성 🌉",
     desc: "외지 관광객들이 찾아와 돈을 쓰도록 자연 절경을 즐기는 흔들다리와 식물 숲 정원을 가꿉니다.",
     effects: {
-      large: { budget: -85, population: +0.6, happiness: +15, news: "도심 속 초대형 생태 수목원 완공! 멀리 안 가도 자연을 만끽해요" },
-      medium: { budget: -55, population: +1.4, happiness: +18, news: "강가 출렁다리 관광 랜드마크 조성 완료! 주말 나들이 명소로 등극" },
+      large: { budget: -120, population: +0.6, happiness: +15, news: "도심 속 초대형 생태 수목원 완공! 멀리 안 가도 자연을 만끽해요" },
+      medium: { budget: -80, population: +1.4, happiness: +18, news: "강가 출렁다리 관광 랜드마크 조성 완료! 주말 나들이 명소로 등극" },
       small: { budget: -30, population: +2.0, happiness: +24, news: "소도시 꽃길 정원 수목원에 관광객 급증! 지역 경제에 단비 같은 관광 효과" }
     }
   },
@@ -345,8 +345,8 @@ const POLICIES = [
     name: "지방 대학교 연계 청년 일자리 인턴십 지원 🎓",
     desc: "우리 고장의 대학생들이 외지로 떠나지 않고 지역 우수 중소기업에 취직해 일자리를 잡도록 연계 훈련을 지원합니다.",
     effects: {
-      large: { budget: -45, population: -0.3, happiness: +6, news: "대학-기업 일자리 매칭 추진! 우수 인프라 대비 청년 취업률 다소 상승" },
-      medium: { budget: -30, population: +0.9, happiness: +11, news: "산학협력 기업 인턴 장학제 도입! 우리 지역 청년 인재들이 정착해요" },
+      large: { budget: -60, population: -0.3, happiness: +6, news: "대학-기업 일자리 매칭 추진! 우수 인프라 대비 청년 취업률 다소 상승" },
+      medium: { budget: -42, population: +0.9, happiness: +11, news: "산학협력 기업 인턴 장학제 도입! 우리 지역 청년 인재들이 정착해요" },
       small: { budget: -15, population: +1.6, happiness: +16, news: "소도시 대학생 학업-취업 원스톱 지원 가동! 마을 인구 뼈대 세울 청년 유치" }
     }
   },
@@ -355,8 +355,8 @@ const POLICIES = [
     name: "공공 초고속 와이파이(Wi-Fi) 망 및 디지털 교육 📶",
     desc: "시민들이 어딜 가든 무선 인터넷을 공짜로 쓰고, 디지털 기기 다루는 법을 친절히 교육해 줍니다.",
     effects: {
-      large: { budget: -40, population: +0.2, happiness: +8, news: "대도시 전철 및 버스 어디서나 빵빵! 초고속 공공 와이파이 전면 무료화" },
-      medium: { budget: -26, population: +0.4, happiness: +10, news: "스마트 소통망 완비! 동네 경로당과 복지관 디지털 정보 접근권 대폭 강화" },
+      large: { budget: -55, population: +0.2, happiness: +8, news: "대도시 전철 및 버스 어디서나 빵빵! 초고속 공공 와이파이 전면 무료화" },
+      medium: { budget: -38, population: +0.4, happiness: +10, news: "스마트 소통망 완비! 동네 경로당 and 복지관 디지털 정보 접근권 대폭 강화" },
       small: { budget: -13, population: +0.6, happiness: +13, news: "시골 마을 정보 소외 극복! 태블릿 무료 대여 및 스마트 기기 활용 교육 개시" }
     }
   },
@@ -366,8 +366,8 @@ const POLICIES = [
     desc: "대도시에 있는 유명 대학교의 일부 학과나 대학원을 소도시로 옮겨, 두 지역 대학생들이 함께 공부할 수 있는 캠퍼스를 만듭니다.",
     allowedCities: ["large"],
     effects: {
-      large: { budget: -25, population: -0.3, happiness: +12, news: "대학 공동 캠퍼스 구축! 대도시 과밀화가 조금 줄어들고 교육 교류가 활성화됩니다." },
-      medium: { budget: -15, population: -0.1, happiness: +8, news: "대학 공동 캠퍼스 참여! 인근 대학과의 활발한 교류로 학생들의 만족도가 올라갑니다." },
+      large: { budget: -35, population: -0.3, happiness: +12, news: "대학 공동 캠퍼스 구축! 대도시 과밀화가 조금 줄어들고 교육 교류가 활성화됩니다." },
+      medium: { budget: -22, population: -0.1, happiness: +8, news: "대학 공동 캠퍼스 참여! 인근 대학과의 활발한 교류로 학생들의 만족도가 올라갑니다." },
       small: { budget: -5, population: +0.5, happiness: +15, news: "공동 캠퍼스 소도시 유치! 대도시 대학생들이 내려와 마을에 젊은 활기가 넘칩니다." }
     }
   },
@@ -377,8 +377,8 @@ const POLICIES = [
     desc: "도심 한가운데 있어서 먼지와 교통 체증을 일으키는 큰 공장이나 택배 터미널을 도시 외곽이나 주변 소도시로 옮기도록 보상금을 줍니다.",
     allowedCities: ["large"],
     effects: {
-      large: { budget: -20, population: -0.2, happiness: +15, news: "도심 공장 외곽 이전! 맑아진 하늘과 뻥 뚫린 도로에 시민들이 크게 기뻐합니다." },
-      medium: { budget: -15, population: -0.1, happiness: +10, news: "도심 물류센터 이전 지원! 도심 소음과 혼잡이 눈에 띄게 완화되었습니다." },
+      large: { budget: -30, population: -0.2, happiness: +15, news: "도심 공장 외곽 이전! 맑아진 하늘 and 뻥 뚫린 도로에 시민들이 크게 기뻐합니다." },
+      medium: { budget: -22, population: -0.1, happiness: +10, news: "도심 물류센터 이전 지원! 도심 소음과 혼잡이 눈에 띄게 완화되었습니다." },
       small: { budget: +10, population: +0.3, happiness: +8, news: "이전 공장 소도시 유치! 공장이 들어서며 세금 수입과 일자리가 늘어납니다." }
     }
   },
@@ -388,8 +388,8 @@ const POLICIES = [
     desc: "대도시 시민들이 주말마다 소도시에 가서 농사를 짓거나 쉴 수 있도록 체험 비용과 기차표를 지원해 줍니다.",
     allowedCities: ["large"],
     effects: {
-      large: { budget: -5, population: 0, happiness: +10, news: "귀농·귀촌 지원센터 개설! 주말마다 텃밭을 가꾸며 힐링하는 시민들이 늘어납니다." },
-      medium: { budget: -4, population: 0, happiness: +8, news: "주말 농장 지원 사업 안착! 자연과 함께 여가를 즐기는 가정이 많아졌습니다." },
+      large: { budget: -10, population: 0, happiness: +10, news: "귀농·귀촌 지원센터 개설! 주말마다 텃밭을 가꾸며 힐링하는 시민들이 늘어납니다." },
+      medium: { budget: -8, population: 0, happiness: +8, news: "주말 농장 지원 사업 안착! 자연과 함께 여가를 즐기는 가정이 많아졌습니다." },
       small: { budget: +5, population: +0.2, happiness: +12, news: "주말 체험객 소도시 유치! 주말마다 외지 사람들로 활기가 돋고 농산물 판매가 늘어납니다." }
     }
   },
@@ -399,8 +399,8 @@ const POLICIES = [
     desc: "새로운 아이디어로 창업하는 젊은 기업가들에게 사무실을 무료로 빌려주고 연구비를 지원하여 대도시로 떠나지 않게 만듭니다.",
     allowedCities: ["medium"],
     effects: {
-      large: { budget: -25, population: +1.0, happiness: +8, news: "스타트업 타운 활성화! 수많은 청년 기업가들이 모여 창업 열기가 뜨겁습니다." },
-      medium: { budget: -15, population: +0.8, happiness: +12, news: "지역 혁신 기업 타운 조성! 청년 인재들이 대도시로 떠나지 않고 이곳에 둥지를 틉니다." },
+      large: { budget: -35, population: +1.0, happiness: +8, news: "스타트업 타운 활성화! 수많은 청년 기업가들이 모여 창업 열기가 뜨겁습니다." },
+      medium: { budget: -22, population: +0.8, happiness: +12, news: "지역 혁신 기업 타운 조성! 청년 인재들이 대도시로 떠나지 않고 이곳에 둥지를 틉니다." },
       small: { budget: -10, population: +0.4, happiness: +10, news: "소도시 청년 창업 허브 구축! 아이디어를 가진 청년들이 모여 마을을 바꿉니다." }
     }
   },
@@ -410,8 +410,8 @@ const POLICIES = [
     desc: "부모님이 늦게까지 안심하고 아이를 맡길 수 있는 어린이집과, 밤에도 아픈 아이를 치료할 수 있는 어린이 전문 병원을 만듭니다.",
     allowedCities: ["medium"],
     effects: {
-      large: { budget: -30, population: +1.0, happiness: +15, news: "아동 병원 및 어린이집 건립! 안심하고 아이 키우기 좋은 환경이 조성됩니다." },
-      medium: { budget: -20, population: +1.2, happiness: +18, news: "24시간 돌봄 어린이집 개원! 맞벌이 부부들의 육아 걱정이 싹 사라집니다." },
+      large: { budget: -45, population: +1.0, happiness: +15, news: "아동 병원 및 어린이집 건립! 안심하고 아이 키우기 좋은 환경이 조성됩니다." },
+      medium: { budget: -30, population: +1.2, happiness: +18, news: "24시간 돌봄 어린이집 개원! 맞벌이 부부들의 육아 걱정이 싹 사라집니다." },
       small: { budget: -12, population: +1.5, happiness: +22, news: "소도시 첫 야간 어린이 안심 시설 완공! 아기 울음소리가 들리는 동네로 변합니다." }
     }
   },
@@ -421,8 +421,8 @@ const POLICIES = [
     desc: "주변 소도시나 대도시를 빠르게 연결하는 전용 버스 노선을 만들고, 역 근처에 주차장을 지어 출퇴근을 편리하게 만듭니다.",
     allowedCities: ["medium"],
     effects: {
-      large: { budget: -25, population: +0.8, happiness: +8, news: "광역 BRT 노선 신설! 외곽 도시와의 통행 시간이 단축되어 출퇴근길이 빨라집니다." },
-      medium: { budget: -15, population: +0.6, happiness: +10, news: "급행 버스 및 환승 주차장 개통! 이웃 도시와의 접근성이 획기적으로 향상됩니다." },
+      large: { budget: -35, population: +0.8, happiness: +8, news: "광역 BRT 노선 신설! 외곽 도시와의 통행 시간이 단축되어 출퇴근길이 빨라집니다." },
+      medium: { budget: -22, population: +0.6, happiness: +10, news: "급행 버스 및 환승 주차장 개통! 이웃 도시와의 접근성이 획기적으로 향상됩니다." },
       small: { budget: -10, population: +0.3, happiness: +8, news: "대도시 연결 급행 버스 도입! 교통 소외를 극복하고 주민들의 이동 편의가 증진됩니다." }
     }
   },
@@ -432,8 +432,8 @@ const POLICIES = [
     desc: "대도시에서 직장을 은퇴한 어르신들이 맑은 공기를 마시며 건강하게 살 수 있도록 병원과 운동 시설이 합쳐진 멋진 마을을 짓습니다.",
     allowedCities: ["small"],
     effects: {
-      large: { budget: -15, population: -0.5, happiness: +8, news: "대도시 은퇴자 지방 실버타운 이주 시작! 도심 고령층 과밀 해소에 도움을 줍니다." },
-      medium: { budget: -12, population: +0.2, happiness: +10, news: "웰니스 실버타운 유치! 은퇴 가구 유입으로 노후 건강 케어 거점 마련." },
+      large: { budget: -22, population: -0.5, happiness: +8, news: "대도시 은퇴자 지방 실버타운 이주 시작! 도심 고령층 과밀 해소에 도움을 줍니다." },
+      medium: { budget: -18, population: +0.2, happiness: +10, news: "웰니스 실버타운 유치! 은퇴 가구 유입으로 노후 건강 케어 거점 마련." },
       small: { budget: -10, population: +0.5, happiness: +10, news: "복합 실버타운 대성공! 대도시 은퇴층이 대거 이주하여 마을이 다시 북적입니다." }
     }
   },
@@ -443,9 +443,9 @@ const POLICIES = [
     desc: "학생이 없어 문을 닫은 학교를 개조하여, 대도시 초등학생들이 6개월간 가족과 함께 시골 학교를 다닐 수 있도록 주택과 장학금을 지원합니다.",
     allowedCities: ["small"],
     effects: {
-      large: { budget: -4, population: -0.1, happiness: +6, news: "시골 유학 체험단 출발! 아이들이 대자연 속에서 마음껏 뛰어놀며 배웁니다." },
-      medium: { budget: -4, population: +0.1, happiness: +8, news: "가족 체류형 유학 프로그램 연계! 도시와 농촌의 상생 교육이 시작됩니다." },
-      small: { budget: -5, population: +0.3, happiness: +12, news: "폐교의 대변신! 시골 유학생 가족 유치로 학교가 살아나고 동네에 웃음꽃이 핍니다." }
+      large: { budget: -8, population: -0.1, happiness: +6, news: "시골 유학 체험단 출발! 아이들이 대자연 속에서 마음껏 뛰어놀며 배웁니다." },
+      medium: { budget: -8, population: +0.1, happiness: +8, news: "가족 체류형 유학 프로그램 연계! 도시와 농촌의 상생 교육이 시작됩니다." },
+      small: { budget: -5, population: +0.3, happiness: +12, news: "폐교의 대변신! 시골 유학생 가족 유치로 school이 살아나고 동네에 웃음꽃이 핍니다." }
     }
   },
   {
@@ -454,8 +454,8 @@ const POLICIES = [
     desc: "큰 병원이 부족한 마을 어르신들을 위해 화면으로 대도시 의사에게 진료를 받는 시스템을 만들고, 물리치료 버스를 매주 보냅니다.",
     allowedCities: ["small"],
     effects: {
-      large: { budget: -10, population: 0, happiness: +6, news: "지방 원격 진료망 연계! 대도시 대형 병원 의사들이 재능 기부로 의료 봉사를 벌입니다." },
-      medium: { budget: -8, population: 0, happiness: +8, news: "외곽 원격 진료소 오픈! 병원 방문이 힘든 고령층의 편의가 대폭 증진됩니다." },
+      large: { budget: -15, population: 0, happiness: +6, news: "지방 원격 진료망 연계! 대도시 대형 병원 의사들이 재능 기부로 의료 봉사를 벌입니다." },
+      medium: { budget: -12, population: 0, happiness: +8, news: "외곽 원격 진료소 오픈! 병원 방문이 힘든 고령층의 편의가 대폭 증진됩니다." },
       small: { budget: -8, population: +0.1, happiness: +15, news: "화면으로 의사를 만나요! 이동식 버스 병원 도입으로 어르신들 건강 고민 해결." }
     }
   },
@@ -465,8 +465,8 @@ const POLICIES = [
     desc: "인터넷만 있으면 어디서나 일할 수 있는 유튜버나 컴퓨터 프로그래머들이 아름다운 자연 속에서 일할 수 있도록 무선 인터넷이 빵빵한 숙소와 사무실을 지원합니다.",
     allowedCities: ["small"],
     effects: {
-      large: { budget: -8, population: -0.2, happiness: +6, news: "디지털 노마드의 지방 이동! 대도시의 빽빽한 오피스를 벗어나 힐링 업무를 선호합니다." },
-      medium: { budget: -6, population: +0.2, happiness: +8, news: "IT 공유 오피스 조성! 트렌디한 디지털 인재들이 도시를 찾습니다." },
+      large: { budget: -12, population: -0.2, happiness: +6, news: "디지털 노마드의 지방 이동! 대도시의 빽빽한 오피스를 벗어나 힐링 업무를 선호합니다." },
+      medium: { budget: -10, population: +0.2, happiness: +8, news: "IT 공유 오피스 조성! 트렌디한 디지털 인재들이 도시를 찾습니다." },
       small: { budget: -5, population: +0.4, happiness: +12, news: "자연 속에서 코딩을! 디지털 노마드들이 몰려와 마을을 적극적으로 홍보합니다." }
     }
   }
