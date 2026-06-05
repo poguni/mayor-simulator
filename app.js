@@ -14,7 +14,7 @@ function shuffleArray(array) {
 }
 
 // 커스텀 알림(Alert) 모달 - Promise 기반 비동기식
-function customAlert(message, type = "info") {
+function customAlert(message, type = "info", title = "시장실 알림 📢") {
   return new Promise((resolve) => {
     const container = document.getElementById("custom-alert-container");
     const titleEl = document.getElementById("custom-alert-title");
@@ -24,7 +24,7 @@ function customAlert(message, type = "info") {
     const okBtn = document.getElementById("btn-custom-alert-ok");
     
     // 타이틀 및 아이콘 색상 설정
-    titleEl.textContent = "시장실 알림 📢";
+    titleEl.textContent = title;
     iconEl.className = "custom-alert-icon";
     if (type === "warning") {
       iconEl.classList.add("warning");
@@ -52,7 +52,7 @@ function customAlert(message, type = "info") {
 }
 
 // 커스텀 확인(Confirm) 모달 - Promise 기반 비동기식
-function customConfirm(message, type = "question") {
+function customConfirm(message, type = "question", title = "시장실 결재 결심 🖋️") {
   return new Promise((resolve) => {
     const container = document.getElementById("custom-alert-container");
     const titleEl = document.getElementById("custom-alert-title");
@@ -61,7 +61,7 @@ function customConfirm(message, type = "question") {
     const cancelBtn = document.getElementById("btn-custom-alert-cancel");
     const okBtn = document.getElementById("btn-custom-alert-ok");
     
-    titleEl.textContent = "시장실 결재 결심 🖋️";
+    titleEl.textContent = title;
     iconEl.className = "custom-alert-icon";
     if (type === "warning") {
       iconEl.classList.add("warning");
@@ -1958,7 +1958,7 @@ function loadTeacherDashboardData() {
       listContainer.querySelectorAll(".btn-delete-report").forEach(btn => {
         btn.addEventListener("click", async (e) => {
           const timestamp = e.currentTarget.getAttribute("data-timestamp");
-          const wantDelete = await customConfirm("정말로 이 학생의 시정 결과 보고서를 삭제하시겠습니까?\n구글 스프레드시트에서도 완전히 지워집니다.", "warning");
+          const wantDelete = await customConfirm("정말로 이 학생의 시정 결과 보고서를 삭제하시겠습니까?\n구글 스프레드시트에서도 완전히 지워집니다.", "warning", "선생님 확인 📝");
           if (wantDelete) {
             deleteStudentReport(timestamp);
           }
