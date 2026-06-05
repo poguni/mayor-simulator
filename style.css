@@ -588,6 +588,10 @@ p {
 }
 
 /* RIGHT PANEL (APPROVAL DOCUMENT) */
+.panel-right {
+  overflow-y: auto !important; /* 해상도 낮을 때 세로 스크롤바 활성화 */
+}
+
 .approval-empty p {
   font-size: 1.1rem;
   line-height: 1.5;
@@ -602,6 +606,8 @@ p {
   flex-direction: column;
   flex: 1;
   overflow: hidden;
+  flex-shrink: 0; /* 높이가 작은 화면에서 기안서가 찌그러지지 않도록 설정 */
+  min-height: min-content;
 }
 
 .doc-header {
