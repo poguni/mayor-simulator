@@ -266,6 +266,116 @@ const POLICIES = [
       medium: { budget: -26, population: +0.4, happiness: +10, news: "스마트 소통망 완비! 동네 경로당과 복지관 디지털 정보 접근권 대폭 강화" },
       small: { budget: -13, population: +0.6, happiness: +13, news: "시골 마을 정보 소외 극복! 태블릿 무료 대여 및 스마트 기기 활용 교육 개시" }
     }
+  },
+  {
+    id: "p19",
+    name: "대도시 대학-지방 대학 공동 캠퍼스 구축 🎓",
+    desc: "대도시에 있는 유명 대학교의 일부 학과나 대학원을 소도시로 옮겨, 두 지역 대학생들이 함께 공부할 수 있는 캠퍼스를 만듭니다.",
+    allowedCities: ["large"],
+    effects: {
+      large: { budget: -25, population: -0.3, happiness: +12, news: "대학 공동 캠퍼스 구축! 대도시 과밀화가 조금 줄어들고 교육 교류가 활성화됩니다." },
+      medium: { budget: -15, population: -0.1, happiness: +8, news: "대학 공동 캠퍼스 참여! 인근 대학과의 활발한 교류로 학생들의 만족도가 올라갑니다." },
+      small: { budget: -5, population: +0.5, happiness: +15, news: "공동 캠퍼스 소도시 유치! 대도시 대학생들이 내려와 마을에 젊은 활기가 넘칩니다." }
+    }
+  },
+  {
+    id: "p20",
+    name: "도심 공장 및 유통센터 외곽 이전 지원 🚛",
+    desc: "도심 한가운데 있어서 먼지와 교통 체증을 일으키는 큰 공장이나 택배 터미널을 도시 외곽이나 주변 소도시로 옮기도록 보상금을 줍니다.",
+    allowedCities: ["large"],
+    effects: {
+      large: { budget: -20, population: -0.2, happiness: +15, news: "도심 공장 외곽 이전! 맑아진 하늘과 뻥 뚫린 도로에 시민들이 크게 기뻐합니다." },
+      medium: { budget: -15, population: -0.1, happiness: +10, news: "도심 물류센터 이전 지원! 도심 소음과 혼잡이 눈에 띄게 완화되었습니다." },
+      small: { budget: +10, population: +0.3, happiness: +8, news: "이전 공장 소도시 유치! 공장이 들어서며 세금 수입과 일자리가 늘어납니다." }
+    }
+  },
+  {
+    id: "p21",
+    name: "주말 농장 및 '귀농·귀촌 체험 지원센터' 운영 🚜",
+    desc: "대도시 시민들이 주말마다 소도시에 가서 농사를 짓거나 쉴 수 있도록 체험 비용과 기차표를 지원해 줍니다.",
+    allowedCities: ["large"],
+    effects: {
+      large: { budget: -5, population: 0, happiness: +10, news: "귀농·귀촌 지원센터 개설! 주말마다 텃밭을 가꾸며 힐링하는 시민들이 늘어납니다." },
+      medium: { budget: -4, population: 0, happiness: +8, news: "주말 농장 지원 사업 안착! 자연과 함께 여가를 즐기는 가정이 많아졌습니다." },
+      small: { budget: +5, population: +0.2, happiness: +12, news: "주말 체험객 소도시 유치! 주말마다 외지 사람들로 활기가 돋고 농산물 판매가 늘어납니다." }
+    }
+  },
+  {
+    id: "p22",
+    name: "지역 혁신 기업(스타트업) 타운 조성 🚀",
+    desc: "새로운 아이디어로 창업하는 젊은 기업가들에게 사무실을 무료로 빌려주고 연구비를 지원하여 대도시로 떠나지 않게 만듭니다.",
+    allowedCities: ["medium"],
+    effects: {
+      large: { budget: -25, population: +1.0, happiness: +8, news: "스타트업 타운 활성화! 수많은 청년 기업가들이 모여 창업 열기가 뜨겁습니다." },
+      medium: { budget: -15, population: +0.8, happiness: +12, news: "지역 혁신 기업 타운 조성! 청년 인재들이 대도시로 떠나지 않고 이곳에 둥지를 틉니다." },
+      small: { budget: -10, population: +0.4, happiness: +10, news: "소도시 청년 창업 허브 구축! 아이디어를 가진 청년들이 모여 마을을 바꿉니다." }
+    }
+  },
+  {
+    id: "p23",
+    name: "24시간 돌봄 어린이집 및 아동 종합병원 건립 🏥",
+    desc: "부모님이 늦게까지 안심하고 아이를 맡길 수 있는 어린이집과, 밤에도 아픈 아이를 치료할 수 있는 어린이 전문 병원을 만듭니다.",
+    allowedCities: ["medium"],
+    effects: {
+      large: { budget: -30, population: +1.0, happiness: +15, news: "아동 병원 및 어린이집 건립! 안심하고 아이 키우기 좋은 환경이 조성됩니다." },
+      medium: { budget: -20, population: +1.2, happiness: +18, news: "24시간 돌봄 어린이집 개원! 맞벌이 부부들의 육아 걱정이 싹 사라집니다." },
+      small: { budget: -12, population: +1.5, happiness: +22, news: "소도시 첫 야간 어린이 안심 시설 완공! 아기 울음소리가 들리는 동네로 변합니다." }
+    }
+  },
+  {
+    id: "p24",
+    name: "광역 급행 버스(BRT) 및 환승 주차장 개통 🚌",
+    desc: "주변 소도시나 대도시를 빠르게 연결하는 전용 버스 노선을 만들고, 역 근처에 주차장을 지어 출퇴근을 편리하게 만듭니다.",
+    allowedCities: ["medium"],
+    effects: {
+      large: { budget: -25, population: +0.8, happiness: +8, news: "광역 BRT 노선 신설! 외곽 도시와의 통행 시간이 단축되어 출퇴근길이 빨라집니다." },
+      medium: { budget: -15, population: +0.6, happiness: +10, news: "급행 버스 및 환승 주차장 개통! 이웃 도시와의 접근성이 획기적으로 향상됩니다." },
+      small: { budget: -10, population: +0.3, happiness: +8, news: "대도시 연결 급행 버스 도입! 교통 소외를 극복하고 주민들의 이동 편의가 증진됩니다." }
+    }
+  },
+  {
+    id: "p25",
+    name: "은퇴자 복합 웰니스 실버타운 조성 🏡",
+    desc: "대도시에서 직장을 은퇴한 어르신들이 맑은 공기를 마시며 건강하게 살 수 있도록 병원과 운동 시설이 합쳐진 멋진 마을을 짓습니다.",
+    allowedCities: ["small"],
+    effects: {
+      large: { budget: -15, population: -0.5, happiness: +8, news: "대도시 은퇴자 지방 실버타운 이주 시작! 도심 고령층 과밀 해소에 도움을 줍니다." },
+      medium: { budget: -12, population: +0.2, happiness: +10, news: "웰니스 실버타운 유치! 은퇴 가구 유입으로 노후 건강 케어 거점 마련." },
+      small: { budget: -10, population: +0.5, happiness: +10, news: "복합 실버타운 대성공! 대도시 은퇴층이 대거 이주하여 마을이 다시 북적입니다." }
+    }
+  },
+  {
+    id: "p26",
+    name: "시골 유학 및 가족 체류 센터 운영 🏫",
+    desc: "학생이 없어 문을 닫은 학교를 개조하여, 대도시 초등학생들이 6개월간 가족과 함께 시골 학교를 다닐 수 있도록 주택과 장학금을 지원합니다.",
+    allowedCities: ["small"],
+    effects: {
+      large: { budget: -4, population: -0.1, happiness: +6, news: "시골 유학 체험단 출발! 아이들이 대자연 속에서 마음껏 뛰어놀며 배웁니다." },
+      medium: { budget: -4, population: +0.1, happiness: +8, news: "가족 체류형 유학 프로그램 연계! 도시와 농촌의 상생 교육이 시작됩니다." },
+      small: { budget: -5, population: +0.3, happiness: +12, news: "폐교의 대변신! 시골 유학생 가족 유치로 학교가 살아나고 동네에 웃음꽃이 핍니다." }
+    }
+  },
+  {
+    id: "p27",
+    name: "스마트 원격 진료소 및 이동식 버스 병원 도입 🚑",
+    desc: "큰 병원이 부족한 마을 어르신들을 위해 화면으로 대도시 의사에게 진료를 받는 시스템을 만들고, 물리치료 버스를 매주 보냅니다.",
+    allowedCities: ["small"],
+    effects: {
+      large: { budget: -10, population: 0, happiness: +6, news: "지방 원격 진료망 연계! 대도시 대형 병원 의사들이 재능 기부로 의료 봉사를 벌입니다." },
+      medium: { budget: -8, population: 0, happiness: +8, news: "외곽 원격 진료소 오픈! 병원 방문이 힘든 고령층의 편의가 대폭 증진됩니다." },
+      small: { budget: -8, population: +0.1, happiness: +15, news: "화면으로 의사를 만나요! 이동식 버스 병원 도입으로 어르신들 건강 고민 해결." }
+    }
+  },
+  {
+    id: "p28",
+    name: "크리에이터 및 디지털 노마드 공유 오피스 구축 💻",
+    desc: "인터넷만 있으면 어디서나 일할 수 있는 유튜버나 컴퓨터 프로그래머들이 아름다운 자연 속에서 일할 수 있도록 무선 인터넷이 빵빵한 숙소와 사무실을 지원합니다.",
+    allowedCities: ["small"],
+    effects: {
+      large: { budget: -8, population: -0.2, happiness: +6, news: "디지털 노마드의 지방 이동! 대도시의 빽빽한 오피스를 벗어나 힐링 업무를 선호합니다." },
+      medium: { budget: -6, population: +0.2, happiness: +8, news: "IT 공유 오피스 조성! 트렌디한 디지털 인재들이 도시를 찾습니다." },
+      small: { budget: -5, population: +0.4, happiness: +12, news: "자연 속에서 코딩을! 디지털 노마드들이 몰려와 마을을 적극적으로 홍보합니다." }
+    }
   }
 ];
 
@@ -654,8 +764,12 @@ function renderPolicyList() {
   const docStamp = document.getElementById("doc-approved-stamp");
   if (docStamp) docStamp.classList.remove("stamped");
   
-  // 이미 집행(결재) 완료한 카드를 제외한 풀에서 무작위 5가지 추출
-  const availablePolicies = POLICIES.filter(p => !gameState.executedPolicyIds.includes(p.id));
+  // 이미 집행(결재) 완료한 카드를 제외하고, 현재 도시 규모에 맞는 정책만 필터링하여 무작위 5가지 추출
+  const availablePolicies = POLICIES.filter(p => {
+    if (gameState.executedPolicyIds.includes(p.id)) return false;
+    if (p.allowedCities && !p.allowedCities.includes(gameState.cityType)) return false;
+    return true;
+  });
   const shuffled = availablePolicies.sort(() => 0.5 - Math.random());
   gameState.currentRoundPolicies = shuffled.slice(0, 5);
   
