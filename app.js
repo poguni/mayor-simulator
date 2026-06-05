@@ -33,7 +33,8 @@ const gameState = {
   activeEvent: null,
   currentRoundPolicies: [], // 이번 해에 추천될 5가지 정책 카드
   isApproving: false, // 결재 중복 클릭 방지용 플래그
-  executedPolicyIds: [] // 이미 결재가 승인되어 집행 완료된 정책 카드 ID 목록
+  executedPolicyIds: [], // 이미 결재가 승인되어 집행 완료된 정책 카드 ID 목록
+  activeEvents: [] // 이번 게임 플레이에서 매년 순차적으로 등장할 무작위 돌발 이벤트 5종
 };
 
 // 2. 도시 규모별 초기 설정 데이터
@@ -495,6 +496,246 @@ const EVENTS = [
         }
       }
     ]
+  },
+  {
+    id: "e6",
+    title: "🚨 출퇴근길 '지옥철' 및 교통 마비 사태 발생!",
+    desc: "우리 시로 몰려오는 인구가 너무 많아져 출퇴근길 지하철과 도로가 완전히 마비되고 시민들의 불만이 폭발합니다!",
+    allowedCities: ["large"],
+    options: [
+      {
+        text: "🚌 2층 광역버스를 즉시 도입하고 지하철 운행을 늘린다.",
+        effects: {
+          large: { budget: -40, population: +0.2, happiness: +10, result: "출퇴근 대란 해결! 2층 버스 도입과 지하철 증편으로 시민들의 통근길 행복도가 크게 올라갔습니다." },
+          medium: { budget: -25, population: +0.1, happiness: +8, result: "출퇴근 통제 완료! 인근 지역과의 교통 연결망 확대 조치 성공." },
+          small: { budget: -15, population: +0.1, happiness: +8, result: "출퇴근 복구! 소도시-대도시 오가는 버스 배차 간격 최적화 완료." }
+        }
+      },
+      {
+        text: "🚲 예산을 아끼기 위해 자전거 출퇴근(자출족) 권장 캠페인을 벌인다.",
+        effects: {
+          large: { budget: -2, population: -0.4, happiness: -15, result: "시민들의 거센 비난! 실효성 없는 자전거 캠페인에 시민들이 냉소를 보내며 교통 체증은 여전히 해결되지 않습니다." },
+          medium: { budget: -1, population: -0.2, happiness: -12, result: "홍보 부족과 사고 위험 증가로 주민들의 자전거 이용률은 미미하며 불편이 지속됩니다." },
+          small: { budget: -1, population: -0.1, happiness: -10, result: "소도시에 자전거 전용 도로가 부족하여 주민들이 위험을 느끼고 불만을 표시합니다." }
+        }
+      }
+    ]
+  },
+  {
+    id: "e7",
+    title: "🚨 도심 노후 아파트 대규모 정전 및 단수!",
+    desc: "지은 지 40년이 넘은 대단지 아파트의 낡은 변전소가 터져 수천 세대의 전기가 나가고 물 공급마저 끊겨 아수라장이 되었습니다.",
+    allowedCities: ["large"],
+    options: [
+      {
+        text: "🛠️ 긴급 노후 배관 및 변전소 교체 비용을 예산으로 보조해 준다.",
+        effects: {
+          large: { budget: -30, population: 0, happiness: +8, result: "안전 최우선 복구! 신속한 변전소 교체 보조금 지원으로 주거 안전도가 올라가고 전력 공급이 안정화되었습니다." },
+          medium: { budget: -20, population: 0, happiness: +6, result: "발 빠른 행정 대처! 침수와 단수를 빠르게 예방하여 단지 주민들이 큰 고비를 넘겼습니다." },
+          small: { budget: -12, population: 0, happiness: +6, result: "소도시 전력 복구 완료! 작은 예산이지만 긴급 안전 진단을 완료했습니다." }
+        }
+      },
+      {
+        text: "📢 비상 발전차만 보내주고 주민들 자체 회의로 해결하도록 한다.",
+        effects: {
+          large: { budget: -1, population: -0.2, happiness: -20, result: "주민 갈등 격화! 지원 없는 방치 정책에 아파트 주민들이 항의하며 다른 살기 좋은 곳으로 이사를 결정합니다." },
+          medium: { budget: -1, population: -0.1, happiness: -15, result: "상수도 모터가 타버려 장기 단수가 이어지고 위생 상태와 주민 만족도가 최악으로 떨어집니다." },
+          small: { budget: -1, population: -0.1, happiness: -12, result: "소도시는 자력 복구가 어려운 독거노인 세대가 많아 큰 고통을 겪고 불만이 쌓입니다." }
+        }
+      }
+    ]
+  },
+  {
+    id: "e8",
+    title: "🚨 쓰레기 매립지 포화 및 쓰레기 대란 위기!",
+    desc: "우리 시에서 나오는 쓰레기를 묻을 매립지가 꽉 찼습니다. 당장 대책을 마련하지 않으면 거리 전체가 쓰레기장으로 변할 위기입니다.",
+    allowedCities: ["large"],
+    options: [
+      {
+        text: "🏭 첨단 친환경 소각장을 건립하고 인근 주민들에게 보상한다.",
+        effects: {
+          large: { budget: -50, population: +0.2, happiness: +5, result: "친환경 소각장 완공! 일부 주민들의 반발은 있었으나 친환경 기술 덕분에 장기적으로 살기 좋은 친환경 도시로 거듭납니다." },
+          medium: { budget: -35, population: +0.1, happiness: +5, result: "민관 협의체 구성 성공! 환경 정화 및 주민 보상 타결로 소각장이 안전하게 가동됩니다." },
+          small: { budget: -18, population: +0.1, happiness: +6, result: "친환경 소각 시설 준공! 타 지역의 폐기물 처리 보조금으로 시 재정 활성화의 발판 마련." }
+        }
+      },
+      {
+        text: "💰 쓰레기 종량제 봉투 가격을 올리고 재활용 단속을 강력히 늘린다.",
+        effects: {
+          large: { budget: +5, population: -0.5, happiness: -25, result: "시민들의 거센 항의! 봉투값 인상으로 세입은 조금 늘었지만 거리 무단 투기가 급증해 도시 이미지가 크게 망가집니다." },
+          medium: { budget: +3, population: -0.3, happiness: -20, result: "봉투 가격 저항으로 시민 반발이 빗발치고 골목길마다 쓰레기 투기 단속 민원이 쏟아집니다." },
+          small: { budget: +1, population: -0.1, happiness: -15, result: "단속 인력이 턱없이 부족하여 효과는 거의 없고 시청 행정에 대한 불신만 늘어납니다." }
+        }
+      }
+    ]
+  },
+  {
+    id: "e9",
+    title: "🚨 신도시 연결 도로 대형 싱크홀(땅 꺼짐) 발생!",
+    desc: "최근 공사 차량과 물동량이 급증한 배후 도로 한복판이 푹 꺼지는 대형 싱크홀이 생겨 출근길 차량 2대가 추락했습니다!",
+    allowedCities: ["medium"],
+    options: [
+      {
+        text: "🛡️ 도로를 전면 통제하고 지하 상하수도 관로 일제 정밀 전수조사를 실시한다.",
+        effects: {
+          large: { budget: -25, population: +0.3, happiness: +10, result: "완벽한 안전 진단! 전철 지하 선로와 주변 관로를 꼼꼼히 점검하여 도로 지반을 단단히 보강했습니다." },
+          medium: { budget: -15, population: +0.2, happiness: +12, result: "철저한 전수조사 완료! 땅속 위험 요소들을 미리 파악하여 정비함으로써 시민들이 안심하고 도로를 이용할 수 있게 되었습니다." },
+          small: { budget: -8, population: +0.1, happiness: +10, result: "안전 예방 조치 안착! 침하 가능 도로를 전면 수리하여 통행 안전을 강화했습니다." }
+        }
+      },
+      {
+        text: "🚧 흙과 아스팔트로 싱크홀 구멍만 신속히 메우고 도로를 다시 개통한다.",
+        effects: {
+          large: { budget: -3, population: -0.2, happiness: -12, result: "땜질 처방의 비극! 며칠 뒤 옆 차로에서 또 미세 침하가 관찰되어 시민들의 불안감이 가중됩니다." },
+          medium: { budget: -2, population: -0.2, happiness: -10, result: "불안한 도로 재개통! 당장 차는 다니지만 언제 또 무너질지 모른다는 도로 불안감에 주민들의 원성이 높습니다." },
+          small: { budget: -1, population: -0.1, happiness: -8, result: "소도시는 부실 도로 방치로 결국 인근 농지와 연결로까지 균열이 가 통행 불편을 겪게 됩니다." }
+        }
+      }
+    ]
+  },
+  {
+    id: "e10",
+    title: "🚨 구도심 전통시장 대형 화재 발생!",
+    desc: "겨울철 낡은 전선 누전으로 인해 우리 지역 전통시장에 큰불이 나 점포 30여 곳이 잿더미가 되어 상인들의 비명이 가득합니다.",
+    allowedCities: ["medium"],
+    options: [
+      {
+        text: "💸 피해 상인 긴급 지원 및 현대식 소방 스프링클러 시설을 전면 설치한다.",
+        effects: {
+          large: { budget: -30, population: +0.5, happiness: +12, result: "시장의 기적적 재건! 대형 안전 시설 확충과 긴급 구호로 활기 넘치는 특화 전통시장으로 복원했습니다." },
+          medium: { budget: -20, population: +0.4, happiness: +15, result: "전통시장 완벽 재건! 긴급 재난지원금과 최신 소방 인프라 구축 덕분에 시장이 다시 활기를 되찾고 시민들이 안심합니다." },
+          small: { budget: -10, population: +0.2, happiness: +12, result: "소도시 시장 화재 진압 및 긴급 위로금 지급을 통해 주민 간의 따뜻한 상생을 이끌어 냈습니다." }
+        }
+      },
+      {
+        text: "🎪 천막으로 임시 시장만 가설해 주고 상인들 자체 생계를 유지하게 유도한다.",
+        effects: {
+          large: { budget: -4, population: -0.2, happiness: -18, result: "상인들의 집단 반발! 시청 정문 앞에서 보상과 제대로 된 대책을 요구하는 침묵 시위가 지속됩니다." },
+          medium: { budget: -3, population: -0.1, happiness: -15, result: "상인들의 절망! 춥고 좁은 천막 시장에서 버티지 못한 많은 상인들과 가족들이 눈물을 흘리며 다른 대도시로 떠나갑니다." },
+          small: { budget: -1, population: -0.1, happiness: -12, result: "고장 유일의 시장이 무력화되어 주민들의 장보기 쉼터가 마비되고 이웃 활력이 저하됩니다." }
+        }
+      }
+    ]
+  },
+  {
+    id: "e11",
+    title: "🚨 인근 대도시로의 '소아과 원정 진료' 대란!",
+    desc: "우리 시에 소아과 전문 병원이 너무 부족하여, 아이가 조금만 아파도 새벽부터 다른 대도시 종합병원으로 원정 진료를 가야 하는 부모들의 불만이 쏟아집니다.",
+    allowedCities: ["medium"],
+    options: [
+      {
+        text: "🏥 공공 심야 어린이병원을 지정하고 의사 채용 보조금을 지원한다.",
+        effects: {
+          large: { budget: -15, population: +0.6, happiness: +15, result: "어린이 병원 연계 확보! 안심 보육 소아센터 신설로 자녀가 있는 가구 유입 가속." },
+          medium: { budget: -10, population: +0.5, happiness: +20, result: "소아 의료 인프라 완비! 이제 한밤중에도 안심하고 진료를 볼 수 있게 되어 아이 키우는 젊은 가족들의 만족도가 매우 높습니다." },
+          small: { budget: -5, population: +0.4, happiness: +18, result: "소도시에 찾아온 희소식! 소아 전문 안심 순회 진료단 가동으로 안심 돌봄 체계 완비." }
+        }
+      },
+      {
+        text: "🕒 시 보건소 소아 진료 시간을 야간 1시간만 연장한다.",
+        effects: {
+          large: { budget: -1, population: -0.2, happiness: -12, result: "실효성 부족! 여전히 전문 응급 치료를 받기 어려워 대도시 대형 병원 원정길은 끊이지 않습니다." },
+          medium: { budget: -0.5, population: -0.3, happiness: -15, result: "빛바랜 대책! 1시간 연장으로는 여전히 소아 전문의 치료를 받기 어려워 부모들의 불만이 지속되고 인구가 빠져나갑니다." },
+          small: { budget: -0.2, population: -0.2, happiness: -10, result: "의료 혜택 공백이 깊어져 소아 환자가 있는 가정들의 지방 소멸 탈출 행렬이 가속됩니다." }
+        }
+      }
+    ]
+  },
+  {
+    id: "e12",
+    title: "🚨 극심한 가뭄으로 농업용수 부족 위기!",
+    desc: "몇 달째 비가 오지 않아 저수지가 완전히 바닥났습니다. 지역 특산물 농사와 주말 작물들이 전부 말라 죽을 위기입니다.",
+    allowedCities: ["small"],
+    options: [
+      {
+        text: "🚜 긴급 관정(지하수)을 파고 양수 장비 가동 유류비를 긴급 지원한다.",
+        effects: {
+          large: { budget: -20, population: +0.1, happiness: +8, result: "대도시 외곽 주말 농장 가뭄 극복! 자연 텃밭의 물길을 무사히 복구했습니다." },
+          medium: { budget: -15, population: +0.1, happiness: +10, result: "가뭄 비상 대책 통과! 관내 배후 농가의 가뭄 피해를 최소화하는 정비 추진." },
+          small: { budget: -10, population: +0.1, happiness: +15, result: "가뭄 위기 극복! 소도시의 소중한 1년 예산 중 큰 돈을 들였지만, 다행히 농업용수 공급 성공으로 사과 풍년의 뼈대를 지켜냅니다." }
+        }
+      },
+      {
+        text: "🌧️ 전통 급수 기우제를 개최하고 살수차 3대만 시범 운행한다.",
+        effects: {
+          large: { budget: -1, population: -0.1, happiness: -10, result: "급수 차량이 너무 적어 주말 정원과 외곽 텃밭들이 갈색으로 말라 죽어갑니다." },
+          medium: { budget: -1, population: -0.2, happiness: -12, result: "농가 지원 지연으로 인해 재배 농작물의 질이 크게 떨어지고 불만이 제기됩니다." },
+          small: { budget: -0.5, population: -0.05, happiness: -10, result: "기우제와 한계! 물이 부족해 사과 농사를 망친 상심에 일부 농민들이 고향을 포기하고 외지로 떠납니다." }
+        }
+      }
+    ]
+  },
+  {
+    id: "e13",
+    title: "🚨 관내 유일한 고등학교 폐교 및 통합 위기!",
+    desc: "아이가 없어 입학생이 급감하자 교육청에서 우리 지역 유일한 고등학교를 인접 중간도시 학교로 내년에 강제 통합하겠다고 예고했습니다.",
+    allowedCities: ["small"],
+    options: [
+      {
+        text: "🏫 기숙사비와 장학금 전액을 대고, 우리 고장만의 특성화 미래 전공을 유치한다.",
+        effects: {
+          large: { budget: -25, population: +0.1, happiness: +10, result: "학교 특성 보강 성공! 지역 특화 명문교 구축을 적극 장려합니다." },
+          medium: { budget: -18, population: +0.2, happiness: +12, result: "기숙 지원 정책 연착륙! 인근 도시 인재들의 전입 장학금 기틀 완성." },
+          small: { budget: -15, population: +0.3, happiness: +20, result: "고등학교 살리기 안착! 장학 지원 소문이 퍼지며 인근 지역에서도 학생들이 전학을 오고 명품 시골 학교로 대성공합니다." }
+        }
+      },
+      {
+        text: "🚌 통학 버스를 운영해 주기로 약속하고 폐교 결정을 받아들인다.",
+        effects: {
+          large: { budget: -3, population: -0.2, happiness: -15, result: "대도시 교육 인프라 폐지 충격! 먼 통학 거리에 학부모들이 우려를 나타냅니다." },
+          medium: { budget: -2, population: -0.5, happiness: -18, result: "교육 수준 하락과 통학 지연 민원 발생으로 부모 정주도가 떨어집니다." },
+          small: { budget: -2, population: -0.2, happiness: -20, result: "학교 붕괴로 인한 도시 소멸 가속! 고등학교가 사라지자 자녀 교육 때문에 학부모들이 가족 단위로 대거 전출하여 동네가 삭막해집니다." }
+        }
+      }
+    ]
+  },
+  {
+    id: "e14",
+    title: "🚨 폭우 산사태로 시골 마을 도로 함몰 및 고립!",
+    desc: "집중호우로 마을 뒷산 흙더미가 쓸려 내려와 어르신들이 모여 사는 시골 마을의 도로가 묻히고 전선이 끊겼습니다.",
+    allowedCities: ["small"],
+    options: [
+      {
+        text: "👷 중장비를 대거 투입해 진입로를 복구하고 산사태 방지벽 대대적 공사를 시행한다.",
+        effects: {
+          large: { budget: -15, population: 0, happiness: +10, result: "도로 축벽 안전 공사 완성! 집중호우 추가 재해 가능 구간을 완벽 봉쇄했습니다." },
+          medium: { budget: -10, population: 0, happiness: +12, result: "산림 옹벽 보강 완료! 토사 붕괴로부터 신도시 배후 단지 도로를 사수했습니다." },
+          small: { budget: -8, population: 0, happiness: +15, result: "철저한 복구와 안전 강화! 무너진 도로를 다시 깔고 방지벽을 단단히 세워 마을 주민들이 두 번 다시 고립될 위험을 방지했습니다." }
+        }
+      },
+      {
+        text: "🚧 흙더미만 임시로 쓸어내고 통행만 가능하게 대처한다.",
+        effects: {
+          large: { budget: -2, population: -0.1, happiness: -10, result: "임시 개방 불안! 절개지 낙석 위험이 잔존하여 통행 제한 조치가 잦아집니다." },
+          medium: { budget: -1, population: -0.1, happiness: -10, result: "부실 정비 논란! 근본 원인을 해결 안 해 주민들의 행정 비판 목소리가 터져 나옵니다." },
+          small: { budget: -1, population: -0.1, happiness: -12, result: "임시 개통의 불안! 안전 공사 없이 길만 뚫어놓아 비가 올 때마다 붕괴 공포에 떠는 어르신들의 시름이 깊어집니다." }
+        }
+      }
+    ]
+  },
+  {
+    id: "e15",
+    title: "🚨 외지인의 쓰레기 무단 무단투기로 청정 계곡 오염!",
+    desc: "주말마다 놀러 오는 관광객들이 쓰레기를 몰래 버리고 취사를 해 우리 고장의 자랑인 1급수 계곡이 쓰레기장으로 오염되고 있습니다.",
+    allowedCities: ["small"],
+    options: [
+      {
+        text: "🌲 마을 주민을 '환경 지킴이 감시단'으로 고용하고 안전 CCTV를 설치한다.",
+        effects: {
+          large: { budget: -5, population: +0.1, happiness: +10, result: "생태 하천 순찰대 가동! 대도시 하천 주변 오염원 단속 성황 및 고용 창출." },
+          medium: { budget: -4, population: +0.1, happiness: +12, result: "환경 파수꾼 고용! 계곡 관리 인프라 강화로 깨끗하고 살기 좋은 에코 시티 구현." },
+          small: { budget: -3, population: +0.1, happiness: +15, result: "일자리와 자연보호 일석이조! 마을 어르신들이 지키는 환경 감시단 덕분에 깨끗해진 계곡과 새로운 주민 소득이 생겼습니다." }
+        }
+      },
+      {
+        text: "📢 '계곡 쓰레기 무단 투기 금지' 현수막만 10개 눈에 띄게 걸어둔다.",
+        effects: {
+          large: { budget: -0.02, population: 0, happiness: -5, result: "관광객 무시! 현수막 아래로 여전히 쓰레기가 잔뜩 버려져 흉물이 되어버립니다." },
+          medium: { budget: -0.01, population: 0, happiness: -5, result: "현수막 대처의 쓴맛! 악취가 심해져 행락철 계곡 상인과 인근 주민의 원성이 커집니다." },
+          small: { budget: -0.01, population: 0, happiness: -5, result: "무용지물 현수막! 현수막이 무색하게 관광객들의 무단 투기가 지속되며 악취와 썩은 시냇물만 늘어납니다." }
+        }
+      }
+    ]
   }
 ];
 
@@ -689,6 +930,11 @@ function initGame(cityType) {
   gameState.phase = "policy1";
   gameState.decisions = [];
   gameState.executedPolicyIds = [];
+  
+  // 이 게임에서 사용할 돌발 이벤트 5종 무작위 셔플 후 저장
+  const allowedEvents = EVENTS.filter(e => !e.allowedCities || e.allowedCities.includes(cityType));
+  const shuffledEvents = allowedEvents.sort(() => 0.5 - Math.random());
+  gameState.activeEvents = shuffledEvents.slice(0, 5);
   
   // 그래프 기록 비우기 및 첫 데이터 삽입
   gameState.history.budget = [config.budget];
@@ -1096,8 +1342,8 @@ function closeNewspaperAndProceed() {
 
 // 10. 돌발 상황 발생 연출
 function triggerSurpriseEvent() {
-  const eventIdx = Math.min(EVENTS.length - 1, gameState.termYear - 1);
-  const currentEvent = EVENTS[eventIdx];
+  // 이전에 initGame에서 현재 도시 규모에 맞게 필터링 및 셔플해둔 activeEvents에서 가져옵니다.
+  const currentEvent = gameState.activeEvents[gameState.termYear - 1] || gameState.activeEvents[gameState.activeEvents.length - 1];
   gameState.activeEvent = currentEvent;
   
   const modal = document.getElementById("modal-container");
