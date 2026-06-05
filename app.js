@@ -3,6 +3,97 @@
 // Google Apps Script 웹 앱 배포 URL (여기에 복사한 URL을 입력하세요)
 const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxjRV8pvy3cUz16tiFZ40UrXX6nKOJ4Nva860e7VRABaulDV6T27vpXcDEOYehswrnJ/exec";
 
+// 피셔-예이츠 셔플 알고리즘 (이벤트와 카드의 진정한 랜덤성을 보장)
+function shuffleArray(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// 커스텀 알림(Alert) 모달 - Promise 기반 비동기식
+function customAlert(message, type = "info") {
+  return new Promise((resolve) => {
+    const container = document.getElementById("custom-alert-container");
+    const titleEl = document.getElementById("custom-alert-title");
+    const msgEl = document.getElementById("custom-alert-message");
+    const iconEl = document.getElementById("custom-alert-icon");
+    const cancelBtn = document.getElementById("btn-custom-alert-cancel");
+    const okBtn = document.getElementById("btn-custom-alert-ok");
+    
+    // 타이틀 및 아이콘 색상 설정
+    titleEl.textContent = "시장실 알림 📢";
+    iconEl.className = "custom-alert-icon";
+    if (type === "warning") {
+      iconEl.classList.add("warning");
+      iconEl.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i>`;
+    } else if (type === "success") {
+      iconEl.classList.add("success");
+      iconEl.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
+    } else {
+      iconEl.innerHTML = `<i class="fa-solid fa-circle-info"></i>`;
+    }
+    
+    msgEl.textContent = message;
+    cancelBtn.style.display = "none"; // 경고창일 땐 취소 버튼 감춤
+    
+    container.style.display = "flex";
+    
+    // 이벤트 리스너 재정의
+    const handleOk = () => {
+      container.style.display = "none";
+      okBtn.removeEventListener("click", handleOk);
+      resolve();
+    };
+    okBtn.addEventListener("click", handleOk);
+  });
+}
+
+// 커스텀 확인(Confirm) 모달 - Promise 기반 비동기식
+function customConfirm(message, type = "question") {
+  return new Promise((resolve) => {
+    const container = document.getElementById("custom-alert-container");
+    const titleEl = document.getElementById("custom-alert-title");
+    const msgEl = document.getElementById("custom-alert-message");
+    const iconEl = document.getElementById("custom-alert-icon");
+    const cancelBtn = document.getElementById("btn-custom-alert-cancel");
+    const okBtn = document.getElementById("btn-custom-alert-ok");
+    
+    titleEl.textContent = "시장실 결재 결심 🖋️";
+    iconEl.className = "custom-alert-icon";
+    if (type === "warning") {
+      iconEl.classList.add("warning");
+      iconEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i>`;
+    } else {
+      iconEl.innerHTML = `<i class="fa-solid fa-signature"></i>`;
+    }
+    
+    msgEl.textContent = message;
+    cancelBtn.style.display = "inline-flex"; // 확인창일 땐 취소 버튼 노출
+    
+    container.style.display = "flex";
+    
+    const handleOk = () => {
+      container.style.display = "none";
+      okBtn.removeEventListener("click", handleOk);
+      cancelBtn.removeEventListener("click", handleCancel);
+      resolve(true);
+    };
+    
+    const handleCancel = () => {
+      container.style.display = "none";
+      okBtn.removeEventListener("click", handleOk);
+      cancelBtn.removeEventListener("click", handleCancel);
+      resolve(false);
+    };
+    
+    okBtn.addEventListener("click", handleOk);
+    cancelBtn.addEventListener("click", handleCancel);
+  });
+}
+
 // 1. 게임 상태 관리
 const gameState = {
   mayorName: "",
@@ -34,7 +125,8 @@ const gameState = {
   currentRoundPolicies: [], // 이번 해에 추천될 5가지 정책 카드
   isApproving: false, // 결재 중복 클릭 방지용 플래그
   executedPolicyIds: [], // 이미 결재가 승인되어 집행 완료된 정책 카드 ID 목록
-  activeEvents: [] // 이번 게임 플레이에서 매년 순차적으로 등장할 무작위 돌발 이벤트 5종
+  executedEventIds: [], // 이미 발생한 돌발 상황 이벤트 ID 목록
+  activeEvents: [] // 이번 게임 플레이에서 매년 순차적으로 등장할 무작위 돌발 이벤트 5종 (하위 호환 유지)
 };
 
 // 2. 도시 규모별 초기 설정 데이터
@@ -773,17 +865,17 @@ document.addEventListener("DOMContentLoaded", () => {
     inputCityName.value = randomPref + randomSuff;
   });
   
-  btnToCitySelect.addEventListener("click", () => {
+  btnToCitySelect.addEventListener("click", async () => {
     const mayor = inputMayorName.value.trim();
     const city = inputCityName.value.trim();
     
     if (!mayor) {
-      alert("시장님의 이름을 입력해 주세요!");
+      await customAlert("시장님의 이름을 입력해 주세요!", "warning");
       inputMayorName.focus();
       return;
     }
     if (!city) {
-      alert("다스릴 도시의 이름을 입력해 주세요!");
+      await customAlert("다스릴 도시의 이름을 입력해 주세요!", "warning");
       inputCityName.focus();
       return;
     }
@@ -853,17 +945,17 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // 관리자 로그인 버튼 이벤트
-  document.getElementById("btn-admin-login").addEventListener("click", () => {
+  document.getElementById("btn-admin-login").addEventListener("click", async () => {
     const adminId = document.getElementById("input-admin-id").value.trim();
     const adminPw = document.getElementById("input-admin-pw").value.trim();
 
     if (!adminId) {
-      alert("아이디를 입력해 주세요.");
+      await customAlert("아이디를 입력해 주세요.", "warning");
       document.getElementById("input-admin-id").focus();
       return;
     }
     if (!adminPw) {
-      alert("비밀번호를 입력해 주세요.");
+      await customAlert("비밀번호를 입력해 주세요.", "warning");
       document.getElementById("input-admin-pw").focus();
       return;
     }
@@ -876,7 +968,7 @@ document.addEventListener("DOMContentLoaded", () => {
       goToScreen("screen-teacher");
       loadTeacherDashboardData();
     } else {
-      alert("아이디 또는 비밀번호가 올바르지 않습니다.");
+      await customAlert("아이디 또는 비밀번호가 올바르지 않습니다.", "warning");
       document.getElementById("input-admin-pw").value = "";
       document.getElementById("input-admin-pw").focus();
     }
@@ -930,11 +1022,8 @@ function initGame(cityType) {
   gameState.phase = "policy1";
   gameState.decisions = [];
   gameState.executedPolicyIds = [];
-  
-  // 이 게임에서 사용할 돌발 이벤트 5종 무작위 셔플 후 저장
-  const allowedEvents = EVENTS.filter(e => !e.allowedCities || e.allowedCities.includes(cityType));
-  const shuffledEvents = allowedEvents.sort(() => 0.5 - Math.random());
-  gameState.activeEvents = shuffledEvents.slice(0, 5);
+  gameState.executedEventIds = []; // 이번 게임의 돌발 상황 이력 초기화
+  gameState.activeEvents = []; // 미사용 처리 리셋
   
   // 그래프 기록 비우기 및 첫 데이터 삽입
   gameState.history.budget = [config.budget];
@@ -1036,7 +1125,7 @@ function renderPolicyList() {
     if (p.allowedCities && !p.allowedCities.includes(gameState.cityType)) return false;
     return true;
   });
-  const shuffled = availablePolicies.sort(() => 0.5 - Math.random());
+  const shuffled = shuffleArray(availablePolicies);
   gameState.currentRoundPolicies = shuffled.slice(0, 5);
   
   // 항상 6번째 선택지로 "아무 정책도 실행하지 않기(건너뛰기)" 카드를 리스트에 추가
@@ -1125,7 +1214,7 @@ function formatImpactText(elementId, value, unit) {
 }
 
 // 8. 정책 최종 결재 실행 (비서실 기안서 도장 타격 연출 추가)
-function approveSelectedPolicy() {
+async function approveSelectedPolicy() {
   if (!gameState.selectedPolicyId || gameState.isApproving) return;
   
   const policy = POLICIES.find(p => p.id === gameState.selectedPolicyId) || gameState.currentRoundPolicies.find(p => p.id === gameState.selectedPolicyId);
@@ -1141,11 +1230,11 @@ function approveSelectedPolicy() {
     // 예상 마이너스 잔고가 최대 비용(대출 한도)을 넘는지 체크
     const nextBudget = gameState.budget + effect.budget;
     if (nextBudget < -maxCost) {
-      alert(`대출 한도 초과! 은행에서 빌릴 수 있는 최대 누적 대출 금액은 이번 라운드 정책 최대 비용인 ${maxCost}억 원입니다.\n(현재 예산: ${gameState.budget}억 원, 선택 정책 비용: ${cost}억 원)`);
+      await customAlert(`대출 한도 초과! 은행에서 빌릴 수 있는 최대 누적 대출 금액은 이번 라운드 정책 최대 비용인 ${maxCost}억 원입니다.\n(현재 예산: ${gameState.budget}억 원, 선택 정책 비용: ${cost}억 원)`, "warning");
       return;
     }
     
-    const wantLoan = confirm(`시청 예산이 부족합니다! 은행에서 대출을 받아 마이너스 예산 상태로 정책을 강행하시겠습니까?\n\n- 부족한 금액(대출액): ${cost - gameState.budget}억 원\n- 경고: 마이너스 예산으로 임기가 끝날 경우 시장 평가 점수가 크게 감점됩니다.`);
+    const wantLoan = await customConfirm(`시청 예산이 부족합니다! 은행에서 대출을 받아 마이너스 예산 상태로 정책을 강행하시겠습니까?\n\n- 부족한 금액(대출액): ${cost - gameState.budget}억 원\n- 경고: 마이너스 예산으로 임기가 끝날 경우 시장 평가 점수가 크게 감점됩니다.`, "warning");
     if (!wantLoan) {
       return;
     }
@@ -1342,9 +1431,25 @@ function closeNewspaperAndProceed() {
 
 // 10. 돌발 상황 발생 연출
 function triggerSurpriseEvent() {
-  // 이전에 initGame에서 현재 도시 규모에 맞게 필터링 및 셔플해둔 activeEvents에서 가져옵니다.
-  const currentEvent = gameState.activeEvents[gameState.termYear - 1] || gameState.activeEvents[gameState.activeEvents.length - 1];
+  // 현재 도시 규모에 적합한 돌발 이벤트 풀 필터링
+  const allowedEvents = EVENTS.filter(e => !e.allowedCities || e.allowedCities.includes(gameState.cityType));
+  
+  // 아직 이번 게임 플레이에서 발생하지 않은 이벤트 목록만 추출
+  let availableEvents = allowedEvents.filter(e => !gameState.executedEventIds.includes(e.id));
+  
+  // 만약 모든 이벤트를 다 소진했다면 (예: 5년 초과 긴급 플레이 등 대비), 이력 리셋하여 순환
+  if (availableEvents.length === 0) {
+    gameState.executedEventIds = [];
+    availableEvents = allowedEvents;
+  }
+  
+  // 남은 이벤트를 진정으로 무작위하게 셔플한 후 첫 번째 것을 선택
+  const shuffled = shuffleArray(availableEvents);
+  const currentEvent = shuffled[0];
+  
   gameState.activeEvent = currentEvent;
+  // 발생한 이벤트 목록에 ID 추가
+  gameState.executedEventIds.push(currentEvent.id);
   
   const modal = document.getElementById("modal-container");
   const paper = document.getElementById("modal-newspaper");
@@ -1377,14 +1482,14 @@ function triggerSurpriseEvent() {
   });
 }
 
-function resolveEvent(option) {
+async function resolveEvent(option) {
   const effect = option.effects[gameState.cityType];
   
   // 돌발상황은 예산 부족으로 게임 진행이 영구 중단되는 데드락을 방지하기 위해 
   // 예산이 마이너스 적자가 되더라도 진행을 허용합니다. (초등교육용 재정적자 시각 피드백 제공)
   const isDeficit = gameState.budget < Math.abs(effect.budget) && effect.budget < 0;
   
-  // 변화치 적용 (예산은 적자 허용을 위해 Math.max(0) 제한 제거)
+  // 변화치 적용 (예산은 적자 허용을 위해 Math.max(0) 제거)
   gameState.budget = gameState.budget + effect.budget;
   gameState.population = Math.max(0.1, parseFloat((gameState.population + effect.population).toFixed(1)));
   gameState.happiness = Math.min(100, Math.max(0, gameState.happiness + effect.happiness));
@@ -1400,9 +1505,10 @@ function resolveEvent(option) {
   // 해결 결과 요약 피드백 구성
   let resultMsg = `[현장 행정 해결 보고]\n${effect.result}`;
   if (isDeficit) {
-    resultMsg += `\n\n🚨 [재정 적자 경고] 예산이 모자란 상황에서 무리하게 긴급 사업을 집행하여, 도시 재정이 적자 상태에 진입했습니다! (현재 예산: ${gameState.budget}억 원)\n앞으로 시 예산을 아끼고 세수 보너스를 확보해 회복해야 합니다.`;
+    resultMsg += `\n\n🚨 [재정 적자 경고]\n예산이 모자란 상황에서 무리하게 긴급 사업을 집행하여, 도시 재정이 적자 상태에 진입했습니다! (현재 예산: ${gameState.budget}억 원)\n\n앞으로 시 예산을 아끼고 세수 보너스를 확보해 회복해야 합니다.`;
   }
-  alert(resultMsg);
+  
+  await customAlert(resultMsg, isDeficit ? "warning" : "success");
   
   const modal = document.getElementById("modal-container");
   modal.style.display = "none";
@@ -1691,13 +1797,13 @@ function renderEndingCharts() {
 }
 
 // 13. 학습 포트폴리오 전송
-function submitToTeacher() {
+async function submitToTeacher() {
   const q1 = document.getElementById("essay-q1").value.trim();
   const q2 = document.getElementById("essay-q2").value.trim();
   const q3 = document.getElementById("essay-q3").value.trim();
   
   if (!q1 || !q2 || !q3) {
-    alert("시정 마무리 생각 정리 질문 3가지를 모두 성실하게 채우고 제출해 주세요!");
+    await customAlert("시정 마무리 생각 정리 질문 3가지를 모두 성실하게 채우고 제출해 주세요!", "warning");
     return;
   }
   
@@ -1728,11 +1834,11 @@ function submitToTeacher() {
   
   if (GAS_WEB_APP_URL === "YOUR_GAS_WEB_APP_URL_HERE" || !GAS_WEB_APP_URL) {
     // 임시 모드 (스프레드시트 URL 미설정 시)
-    setTimeout(() => {
+    setTimeout(async () => {
       submitBtn.className = "btn btn-secondary";
       submitBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> 제출 완료!`;
       document.getElementById("btn-go-to-login").style.display = "inline-flex";
-      alert("축하합니다! 시정 결과 보고서와 서술형 답변이 로컬에 저장되었습니다.\n(참고: app.js 상단의 GAS_WEB_APP_URL에 구글 스프레드시트 GAS 앱 URL을 입력하면 실시간 전송이 가능해집니다.)");
+      await customAlert("축하합니다! 시정 결과 보고서와 서술형 답변이 로컬에 저장되었습니다.\n(참고: app.js 상단의 GAS_WEB_APP_URL에 구글 스프레드시트 GAS 앱 URL을 입력하면 실시간 전송이 가능해집니다.)", "success");
     }, 1500);
     return;
   }
@@ -1745,16 +1851,16 @@ function submitToTeacher() {
     },
     body: JSON.stringify(payload)
   })
-  .then(() => {
-    // no-cors 특성상 응답 body는 읽을 수 없으나(opaque), 전송 자체는 성공적으로 도달함
+  .then(async () => {
+    // no-cors 특상상 응답 body는 읽을 수 없으나(opaque), 전송 자체는 성공적으로 도달함
     submitBtn.className = "btn btn-secondary";
     submitBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> 제출 완료!`;
     document.getElementById("btn-go-to-login").style.display = "inline-flex";
-    alert("축하합니다! 시정 결과 보고서와 서술형 답변이 선생님의 구글 스프레드시트에 성공적으로 제출되었습니다.");
+    await customAlert("축하합니다! 시정 결과 보고서와 서술형 답변이 선생님의 구글 스프레드시트에 성공적으로 제출되었습니다.", "success");
   })
-  .catch(err => {
+  .catch(async err => {
     console.error("구글 스프레드시트 제출 오류:", err);
-    alert("선생님 구글 스프레드시트로 전송하는 중 오류가 발생했습니다. 네트워크 상태를 확인해 주세요.");
+    await customAlert("선생님 구글 스프레드시트로 전송하는 중 오류가 발생했습니다. 네트워크 상태를 확인해 주세요.", "warning");
     submitBtn.disabled = false;
     submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> 선생님께 제출하기 📤`;
   });
@@ -1850,9 +1956,10 @@ function loadTeacherDashboardData() {
 
       // 삭제 버튼 바인딩
       listContainer.querySelectorAll(".btn-delete-report").forEach(btn => {
-        btn.addEventListener("click", (e) => {
+        btn.addEventListener("click", async (e) => {
           const timestamp = e.currentTarget.getAttribute("data-timestamp");
-          if (confirm("정말로 이 학생의 시정 결과 보고서를 삭제하시겠습니까? 구글 스프레드시트에서도 완전히 지워집니다.")) {
+          const wantDelete = await customConfirm("정말로 이 학생의 시정 결과 보고서를 삭제하시겠습니까?\n구글 스프레드시트에서도 완전히 지워집니다.", "warning");
+          if (wantDelete) {
             deleteStudentReport(timestamp);
           }
         });
@@ -1871,9 +1978,9 @@ function loadTeacherDashboardData() {
     });
 }
 
-function deleteStudentReport(timestamp) {
+async function deleteStudentReport(timestamp) {
   if (GAS_WEB_APP_URL === "YOUR_GAS_WEB_APP_URL_HERE" || !GAS_WEB_APP_URL) {
-    alert("GAS 웹 앱 URL이 설정되지 않아 삭제할 수 없습니다.");
+    await customAlert("GAS 웹 앱 URL이 설정되지 않아 삭제할 수 없습니다.", "warning");
     return;
   }
 
@@ -1894,13 +2001,13 @@ function deleteStudentReport(timestamp) {
     },
     body: JSON.stringify({ action: "delete", timestamp: timestamp })
   })
-  .then(() => {
-    alert("선택한 학생의 시정 보고서 기록이 구글 스프레드시트에서 완전히 삭제되었습니다.");
+  .then(async () => {
+    await customAlert("선택한 학생의 시정 보고서 기록이 구글 스프레드시트에서 완전히 삭제되었습니다.", "success");
     loadTeacherDashboardData(); // 삭제 후 대시보드 새로고침
   })
-  .catch(err => {
+  .catch(async err => {
     console.error("삭제 요청 실패:", err);
-    alert("기록 삭제 중 오류가 발생했습니다. 네트워크 상태를 확인해 주세요.");
+    await customAlert("기록 삭제 중 오류가 발생했습니다. 네트워크 상태를 확인해 주세요.", "warning");
     loadTeacherDashboardData();
   });
 }

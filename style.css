@@ -1369,3 +1369,88 @@ p {
     font-size: 12pt !important;
   }
 }
+
+/* ==========================================================================
+   Custom Alert & Confirm Modal Styles
+   ========================================================================== */
+.custom-alert-card {
+  background-color: #fdfbf7; /* 시장 결재 서류 느낌의 따뜻한 연크림색 배경 */
+  padding: 40px 45px;
+  border-radius: 28px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+  width: 90%;
+  max-width: 600px; /* 크기를 약간 넓힘 */
+  text-align: center;
+  border: 3px solid #e5c158; /* 품격 있는 골드 테두리 추가 */
+  animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.custom-alert-icon {
+  width: 80px; /* 아이콘 크기 확대 */
+  height: 80px;
+  border-radius: 50%;
+  background-color: rgba(74, 144, 226, 0.12);
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.6rem;
+  margin-bottom: 25px;
+}
+
+.custom-alert-icon.warning {
+  background-color: rgba(231, 76, 60, 0.12);
+  color: var(--negative-color);
+}
+
+.custom-alert-icon.success {
+  background-color: rgba(46, 204, 113, 0.12);
+  color: var(--positive-color);
+}
+
+.custom-alert-card h3 {
+  font-family: var(--font-title);
+  font-size: 1.9rem; /* 제목 글꼴 크기 크게 상향 */
+  color: #2c3e50; /* 선명한 딥 네이비 */
+  margin-bottom: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.custom-alert-card p {
+  font-family: var(--font-body);
+  font-size: 1.4rem; /* 본문 글꼴 크기를 1.25rem에서 1.4rem으로 크게 상향 */
+  color: #34495e; /* 가독성을 위해 더 선명한 색상 적용 */
+  line-height: 1.8; /* 가독성을 위한 줄간격 확보 */
+  margin-bottom: 35px;
+  white-space: pre-line;
+  text-align: left; /* 본문 내용은 왼쪽 정렬하여 긴 문장 가독성 향상 */
+  width: 100%;
+}
+
+.custom-alert-buttons {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+.custom-alert-buttons .btn {
+  flex: 1;
+  max-width: 180px; /* 버튼 가로폭 소폭 확대 */
+  padding: 14px 28px; /* 패딩 넓힘 */
+  font-size: 1.25rem; /* 버튼 글꼴 크기 상향 */
+  font-weight: bold;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-alert-buttons .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
