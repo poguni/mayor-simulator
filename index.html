@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내가 만약 시장이라면 - 우리 도시 경영 시뮬레이터</title>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js for End-game Visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- App Header (Global) -->
+  <header class="app-header">
+    <div class="app-title-area">
+      <i class="fa-solid fa-city fa-xl"></i>
+      <h1>내가 만약 시장이라면</h1>
+      <span class="app-title-badge">초등 사회 교과 연계형</span>
+    </div>
+    <div class="app-info-area">
+      <span id="header-user-info" style="display: none;">
+        <i class="fa-solid fa-user-tie"></i> <span id="header-mayor-name">시장</span> | 
+        <i class="fa-solid fa-map-location-dot"></i> <span id="header-city-name">도시</span>
+      </span>
+    </div>
+  </header>
+
+  <!-- SCREEN 1: LOGIN -->
+  <section id="screen-login" class="screen active">
+    <div class="login-container">
+      <div class="login-card">
+        <h2>시장 취임 서약서</h2>
+        <p class="login-subtitle">훌륭한 시장이 되기 위해 아래 정보를 입력해 주세요.</p>
+        
+        <div class="input-group">
+          <label for="input-mayor-name"><i class="fa-solid fa-signature"></i> 시장님 이름 (본인 이름)</label>
+          <input type="text" id="input-mayor-name" placeholder="예: 홍길동" maxlength="10">
+        </div>
+        
+        <div class="input-group">
+          <label for="input-city-name"><i class="fa-solid fa-flag"></i> 새로운 도시 이름</label>
+          <div class="input-with-btn">
+            <input type="text" id="input-city-name" placeholder="예: 푸른샘시" maxlength="12">
+            <button type="button" id="btn-random-city" class="btn btn-secondary">
+              <i class="fa-solid fa-dice"></i> 랜덤 추천
+            </button>
+          </div>
+        </div>
+        
+        <button id="btn-to-city-select" class="btn btn-primary btn-block">
+          도시 규모 선택하러 가기 <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <div style="margin-top: 20px; text-align: center;">
+          <a href="#" id="link-teacher-dashboard" style="font-size: 0.95rem; color: var(--text-sub); text-decoration: underline; font-weight: bold;">
+            <i class="fa-solid fa-chalkboard-user"></i> 교사용 관리자 대시보드 바로가기
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 1B: ADMIN LOGIN -->
+  <section id="screen-admin-login" class="screen">
+    <div class="login-container">
+      <div class="login-card">
+        <div class="login-badge" style="background-color: var(--primary-color);"><i class="fa-solid fa-user-shield"></i> 관리자 인증</div>
+        <h2>교사 대시보드 로그인</h2>
+        <p class="login-subtitle">학생들의 데이터를 관리하기 위해 계정 정보를 입력하세요.</p>
+        
+        <div class="input-group">
+          <label for="input-admin-id"><i class="fa-solid fa-user"></i> 아이디</label>
+          <input type="text" id="input-admin-id" placeholder="admin" autocomplete="off">
+        </div>
+        
+        <div class="input-group" style="margin-top: 15px;">
+          <label for="input-admin-pw"><i class="fa-solid fa-lock"></i> 비밀번호</label>
+          <input type="password" id="input-admin-pw" placeholder="••••••••">
+        </div>
+        
+        <div style="display: flex; gap: 10px; margin-top: 25px;">
+          <button id="btn-admin-login" class="btn btn-primary" style="flex: 1;">
+            <i class="fa-solid fa-right-to-bracket"></i> 로그인
+          </button>
+          <button id="btn-admin-back" class="btn btn-secondary" style="padding: 14px 20px;">
+            돌아가기
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 2: CITY SELECT -->
+  <section id="screen-city-select" class="screen">
+    <div class="section-title">
+      <h2>어떤 도시의 시장으로 취임하시겠습니까?</h2>
+      <p>도시의 크기에 따라 예산과 안고 있는 사회적 문제가 다릅니다. 신중하게 선택해 주세요!</p>
+    </div>
+    
+    <div class="city-cards-grid">
+      <!-- 대도시 -->
+      <div class="card city-card" data-city-type="large">
+        <div class="city-icon large-city"><i class="fa-solid fa-building-user"></i></div>
+        <h3>대도시 (북적북적 붐비는 도시)</h3>
+        <div class="city-badge density-red">🔴 복잡함</div>
+        
+        <ul class="city-stats-list">
+          <li><span>💰 시작 예산:</span> <strong>1,000억 원</strong></li>
+          <li><span>👥 시작 인구:</span> <strong>50만 명</strong></li>
+          <li><span>🚗 도시 복잡도:</span> <strong>매우 붐빔</strong></li>
+        </ul>
+        
+        <div class="city-warning">
+          <i class="fa-solid fa-triangle-exclamation"></i> 
+          <strong>도시가 너무 복잡해요!</strong> 사람들이 너무 많이 뭉쳐 살아 교통 체증과 매연 문제가 있어 매년 예산과 행복도가 저절로 줄어듭니다.
+        </div>
+        
+        <button class="btn btn-primary btn-select-city">대도시 시장으로 취임하기 👑</button>
+      </div>
+
+      <!-- 중간 도시 -->
+      <div class="card city-card" data-city-type="medium">
+        <div class="city-icon medium-city"><i class="fa-solid fa-house-chimney-window"></i></div>
+        <h3>중간 도시 (성장하고 있는 도시)</h3>
+        <div class="city-badge density-yellow">🟡 적당함</div>
+        
+        <ul class="city-stats-list">
+          <li><span>💰 시작 예산:</span> <strong>500억 원</strong></li>
+          <li><span>👥 시작 인구:</span> <strong>30만 명</strong></li>
+          <li><span>🚗 도시 복잡도:</span> <strong>보통</strong></li>
+        </ul>
+        
+        <div class="city-warning">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <strong>이웃 대도시로의 이사 주의!</strong> 옆에 있는 큰 도시로 주민들이 이사를 가버리기 쉬워 매년 인구가 줄어드는 위기가 있습니다.
+        </div>
+        
+        <button class="btn btn-primary btn-select-city">중간 도시 시장으로 취임하기 👑</button>
+      </div>
+
+      <!-- 소도시 -->
+      <div class="card city-card" data-city-type="small">
+        <div class="city-icon small-city"><i class="fa-solid fa-tree"></i></div>
+        <h3>소도시 (사라질 위기의 시골 마을)</h3>
+        <div class="city-badge density-green">🟢 한적함</div>
+        
+        <ul class="city-stats-list">
+          <li><span>💰 시작 예산:</span> <strong>120억 원</strong></li>
+          <li><span>👥 시작 인구:</span> <strong>8만 명</strong></li>
+          <li><span>🚗 도시 복잡도:</span> <strong>매우 한적함</strong></li>
+        </ul>
+        
+        <div class="city-warning">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <strong>마을 소멸 위기 보유!</strong> 학교와 큰 어린이 병원이 많이 부족해서 이를 해결해주지 않으면 마을 사람들이 금방 떠납니다.
+        </div>
+        
+        <button class="btn btn-primary btn-select-city">소도시 시장으로 취임하기 👑</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: MAIN GAME (3-Panel Layout) -->
+  <section id="screen-game" class="screen">
+    <div class="game-layout">
+      
+      <!-- LEFT PANEL: City Dashboard (20%) -->
+      <aside class="panel panel-left card">
+        <div class="panel-header">
+          <h3><i class="fa-solid fa-chart-line"></i> 실시간 시정 현황</h3>
+        </div>
+        
+        <div class="dashboard-info">
+          <div class="mayor-profile">
+            <span class="avatar"><i class="fa-solid fa-user-tie"></i></span>
+            <div>
+              <h4 id="dash-mayor-name">홍길동 시장</h4>
+              <span id="dash-city-name" class="city-name-tag">푸른샘시</span>
+            </div>
+          </div>
+          
+          <div class="term-badge">
+            <i class="fa-regular fa-calendar-days"></i> 임기 <span id="dash-term-year">1</span>년 차 / 5년
+          </div>
+        </div>
+
+        <div class="stats-container">
+          <!-- 예산 -->
+          <div class="stat-box">
+            <div class="stat-title">
+              <span>💰 예산</span>
+              <span id="change-budget" class="stat-change"></span>
+            </div>
+            <div id="val-budget" class="stat-value">1,000억 원</div>
+            <div class="progress-bar-container">
+              <div id="bar-budget" class="progress-bar progress-budget" style="width: 100%"></div>
+            </div>
+          </div>
+          
+          <!-- 인구 -->
+          <div class="stat-box">
+            <div class="stat-title">
+              <span>👥 인구수</span>
+              <span id="change-population" class="stat-change"></span>
+            </div>
+            <div id="val-population" class="stat-value">50.0만 명</div>
+            <div class="progress-bar-container">
+              <div id="bar-population" class="progress-bar progress-population" style="width: 100%"></div>
+            </div>
+          </div>
+
+          <!-- 인구 밀도 -->
+          <div class="stat-box">
+            <div class="stat-title">
+              <span>🚗 인구 밀도</span>
+            </div>
+            <div id="badge-density" class="density-status density-red">🔴 매우 복잡함</div>
+            <div class="density-desc" id="txt-density-desc">과밀화로 인한 교통·환경 패널티 작동 중</div>
+          </div>
+
+          <!-- 행복도 -->
+          <div class="stat-box">
+            <div class="stat-title">
+              <span>🥰 시민 행복도</span>
+              <span id="change-happiness" class="stat-change"></span>
+            </div>
+            <div id="val-happiness" class="stat-value">70점</div>
+            <div class="progress-bar-container">
+              <div id="bar-happiness" class="progress-bar progress-happiness" style="width: 70%"></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CENTER PANEL: Policy Selection (50%) -->
+      <main class="panel panel-center card">
+        <div class="panel-header">
+          <h3><i class="fa-solid fa-list-check"></i> 집무실 정책 제시</h3>
+          <span class="policy-indicator">이 달의 결재 정책 후보 (5개 중 1개 선택)</span>
+        </div>
+        
+        <div class="policy-instruction">
+          <p class="instruction-text">
+            <i class="fa-solid fa-circle-info"></i> 
+            <span id="instruction-mayor-name">시장</span>님! 현재 임기에 시행할 <strong>올해의 정책</strong>을 검토하고, 우측 결재 서류에 결재 도장을 찍어주세요.
+          </p>
+        </div>
+
+        <div class="policy-list" id="policy-cards-container">
+          <!-- Policy cards will be injected by JavaScript -->
+        </div>
+      </main>
+
+      <!-- RIGHT PANEL: Cabinet Approval (30%) -->
+      <aside class="panel panel-right card">
+        <div class="panel-header">
+          <h3><i class="fa-solid fa-file-signature"></i> 비서실 결재 서류</h3>
+        </div>
+        
+        <!-- Empty State -->
+        <div id="approval-empty-state" class="approval-empty">
+          <div class="folder-icon"><i class="fa-regular fa-folder-open"></i></div>
+          <p>가운데 패널에서<br>검토할 정책 카드를 선택해 주세요.</p>
+        </div>
+
+        <!-- Document Sheet -->
+        <div id="approval-document" class="document-sheet" style="display: none;">
+          <div class="doc-header">
+            <span class="doc-title-badge">기안서</span>
+            <h4 id="doc-title">공공 기관 이전 유치 정책</h4>
+          </div>
+          
+          <div class="doc-body">
+            <div class="doc-section">
+              <h5><i class="fa-solid fa-align-left"></i> 정책 설명</h5>
+              <p id="doc-desc" class="doc-text">정책에 대한 상세 설명이 제공됩니다. 이 정책은 도시의 발전과 균형을 도모하기 위해 필수적인 역할을 수행합니다.</p>
+            </div>
+            
+            <div class="doc-section">
+              <h5><i class="fa-solid fa-arrow-right-arrow-left"></i> 정책 트레이드오프 (예상 수치 변화)</h5>
+              <div class="impact-stats">
+                <div class="impact-item">
+                  <span>💰 예산 변동:</span>
+                  <strong id="impact-budget" class="text-neg">-15억 원</strong>
+                </div>
+                <div class="impact-item">
+                  <span>👥 인구 변동:</span>
+                  <strong id="impact-population" class="text-pos">+2,000 명</strong>
+                </div>
+                <div class="impact-item">
+                  <span>🥰 행복도 변동:</span>
+                  <strong id="impact-happiness" class="text-pos">+12%</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="doc-section doc-sign-area">
+              <p>위 정책을 올해 시정 과제로 최종 집행하고자 하오니 결재해 주시기 바랍니다.</p>
+              <div class="sign-block">
+                <span>기안자: 비서실장 👤</span>
+                <span class="sign-stamp-placeholder">결 재 대 기</span>
+                <div class="doc-approved-stamp" id="doc-approved-stamp">결재 완료</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="doc-footer">
+            <button id="btn-approve-policy" class="btn btn-success btn-block">
+              정책 실행 결재하기 🖋️
+            </button>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+  <!-- SCREEN 4: NEWSPAPER / EVENT MODAL -->
+  <div id="modal-container" class="modal-overlay" style="display: none;">
+    
+    <!-- News Paper Mode -->
+    <div id="modal-newspaper" class="newspaper-card" style="display: none;">
+      <div class="newspaper-header">
+        <div class="newspaper-meta">
+          <span>제 <span id="news-term-year">1</span>년 차 시정 특별 보고서</span>
+          <span id="news-date">2026년 6월 5일</span>
+        </div>
+        <h1 class="newspaper-logo" id="news-paper-logo">📰 [도시이름] 신문</h1>
+      </div>
+      
+      <div class="newspaper-body">
+        <div class="approved-stamp" id="approved-stamp">승인</div>
+        
+        <div class="headline-container">
+          <h2 id="news-headline">"창업 청년들 몰려온다! 청년마을 사업 대성공"</h2>
+        </div>
+        
+        <div class="news-content-grid">
+          <p id="news-article" class="news-text">
+            이곳에는 최종 정책 결재 후 발생하는 스토리가 노출됩니다. 정책 집행으로 인해 시민들이 겪은 긍정적 혹은 부정적 사회 현상들이 신문 지면처럼 생생하게 설명됩니다.
+          </p>
+          
+          <div class="news-stats-card">
+            <h4>📊 지표 변동 결과 요약</h4>
+            <ul class="news-change-list">
+              <li>예산: <span id="news-change-budget" class="text-neg">-15억</span></li>
+              <li>인구: <span id="news-change-population" class="text-pos">+5,000명</span></li>
+              <li>행복도: <span id="news-change-happiness" class="text-pos">+8%</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="newspaper-footer">
+        <button id="btn-close-newspaper" class="btn btn-primary">
+          <span id="news-btn-text">계속하기</span> <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Surprise Event Mode -->
+    <div id="modal-event" class="event-card" style="display: none;">
+      <div class="event-header">
+        <div class="event-alert"><i class="fa-solid fa-triangle-exclamation"></i> 삐뽀삐뽀! 깜짝 돌발 상황 발생</div>
+        <h2 id="event-title">🚨 도시 쓰레기 처리장 문제 발생!</h2>
+      </div>
+      
+      <div class="event-body">
+        <p id="event-desc" class="event-text">
+          쓰레기 매립지가 한계에 도달하여 주민들이 악취 민원을 넣고 시위를 시작했습니다! 예산을 들여 임시 처리장을 만들 것인지, 아니면 쓰레기 분리배출 캠페인으로 극복할 것인지 정해야 합니다.
+        </p>
+        
+        <div class="event-options" id="event-options-container">
+          <!-- Event options will be injected dynamically -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SCREEN 5: ENDING REPORT -->
+  <section id="screen-ending" class="screen">
+    <div class="ending-container">
+      
+      <div class="ending-header text-center">
+        <div class="ending-badge">📜 5년 임기 종료</div>
+        <h2>시정 결과 최종 보고서</h2>
+        <p><span class="city-name-tag" id="end-city-name">도시이름시</span>를 이끌어주신 <strong id="end-mayor-name">시장</strong>님, 수고하셨습니다!</p>
+      </div>
+
+      <div class="ending-grid">
+        
+        <!-- Row 1 Left Column: Grade & Evaluation -->
+        <div class="ending-subcard card text-center">
+          <h3>🏆 나의 시장 등급</h3>
+          <div id="end-mayor-title" class="ending-title-badge">🏆 황금 밸런스 명품 시장</div>
+          
+          <div class="stars-rating" id="stars-container">
+            <!-- Stars will be injected by JavaScript -->
+          </div>
+          
+          <!-- 간단한 칭찬 메시지 -->
+          <div id="end-mayor-compliment" class="ending-compliment-box">
+            "시민들과의 약속을 지키고 예산을 알차게 쓴 멋진 시장님!"
+          </div>
+          
+          <!-- 분야별 평가 점수 -->
+          <div class="ending-detail-scores">
+            <h4>📊 분야별 시정 평가 점수</h4>
+            <div class="score-row">
+              <span>👥 인구 유치 및 밀도 관리</span>
+              <strong id="score-population">0점</strong>
+            </div>
+            <div class="score-row">
+              <span>🥰 시민 복지 및 행복도</span>
+              <strong id="score-happiness">0점</strong>
+            </div>
+            <div class="score-row">
+              <span>💰 지방 재정 및 예산 관리</span>
+              <strong id="score-budget">0점</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 1 Right Column: Final Stats Comparison (New) -->
+        <div class="ending-subcard card">
+          <h3>📈 퇴임 시 최종 시정 지표 비교</h3>
+          <p class="stats-compare-guide"><i class="fa-solid fa-circle-info"></i> 임기 시작 시점의 도시 지표와 최종 지표를 비교한 결과입니다.</p>
+          
+          <div class="stats-compare-container">
+            <!-- 최종 인구 -->
+            <div class="compare-box">
+              <div class="compare-icon pop-icon"><i class="fa-solid fa-users"></i></div>
+              <div class="compare-details">
+                <span class="compare-title">최종 퇴임 인구수</span>
+                <div class="compare-values">
+                  <strong id="final-pop-val" class="final-val">0.0만 명</strong>
+                  <span id="final-pop-change" class="change-val">시작 대비 +0.0만 명</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 최종 행복도 -->
+            <div class="compare-box">
+              <div class="compare-icon happy-icon"><i class="fa-solid fa-heart"></i></div>
+              <div class="compare-details">
+                <span class="compare-title">시민 최종 행복도</span>
+                <div class="compare-values">
+                  <strong id="final-happy-val" class="final-val">0점</strong>
+                  <span id="final-happy-change" class="change-val">시작 대비 +0점</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 최종 예산 -->
+            <div class="compare-box">
+              <div class="compare-icon budget-icon"><i class="fa-solid fa-wallet"></i></div>
+              <div class="compare-details">
+                <span class="compare-title">남은 지방 재정 예산</span>
+                <div class="compare-values">
+                  <strong id="final-budget-val" class="final-val">0억 원</strong>
+                  <span id="final-budget-change" class="change-val">시작 대비 +0억 원</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Line Charts: Trend Visualizations (Row 2) -->
+      <div class="card chart-subcard">
+        <h3>📈 5개년 시정 지표 변화 추이</h3>
+        <div class="charts-container">
+          <div class="chart-wrapper">
+            <canvas id="chart-population"></canvas>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="chart-budget"></canvas>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="chart-happiness"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3: Decisions Timeline (Moved from Row 1) -->
+      <div class="card ending-timeline-card">
+        <h3>⏳ 시장님의 5년 임기 동안 의사 결정 이력 타임라인</h3>
+        <div class="timeline" id="timeline-container">
+          <!-- Timeline items will be injected by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Descriptive Questions (For Education Portfolio) -->
+      <div class="card ending-subcard essay-subcard">
+        <h3>📝 [스스로 활동] 나의 생각을 정리해 봅시다.</h3>
+        <p class="question-guide">크롬북(디벗)을 사용하여 질문에 성실히 답변을 작성해 주세요. 작성한 내용은 선생님께 전송됩니다.</p>
+        
+        <div class="essay-group">
+          <label class="essay-label">1. 국가의 균형 발전을 위해 가장 중요한 정책이 무엇이라고 생각하나요?</label>
+          <textarea id="essay-q1" placeholder="예: 소도시에 병원이나 학교 같은 시설을 지어서 인구 소멸을 막는 것이 중요합니다."></textarea>
+        </div>
+
+        <div class="essay-group">
+          <label class="essay-label">2. 그렇게 생각한 이유는 무엇인가요?</label>
+          <textarea id="essay-q2" placeholder="이유를 구체적으로 적어주세요."></textarea>
+        </div>
+
+        <div class="essay-group">
+          <label class="essay-label">3. 5년 동안 시장을 맡아 직접 시를 운영하고 느낀 점을 적어봅시다.</label>
+          <textarea id="essay-q3" placeholder="정책을 선택하면서 예산의 제한을 느꼈다던지, 보람 있었던 일을 적어주세요."></textarea>
+        </div>
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="ending-actions text-center no-print">
+        <button id="btn-print-report" class="btn btn-secondary">
+          <i class="fa-solid fa-print"></i> 보고서 인쇄하기 (포트폴리오)
+        </button>
+        <button id="btn-submit-teacher" class="btn btn-success">
+          <i class="fa-solid fa-paper-plane"></i> 선생님께 제출하기 📤
+        </button>
+        <button id="btn-back-to-dashboard" class="btn btn-primary" style="display: none;">
+          <i class="fa-solid fa-chalkboard-user"></i> 대시보드로 돌아가기
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SCREEN 6: TEACHER DASHBOARD -->
+  <section id="screen-teacher" class="screen">
+    <div class="ending-container">
+      <div class="ending-header text-center">
+        <div class="ending-badge" style="background-color: var(--primary-color);"><i class="fa-solid fa-chalkboard-user"></i> 교사용 관리 대시보드</div>
+        <h2>'내가 만약 시장이라면' 결과 확인</h2>
+        <p>우리 반 학생들이 제출한 시뮬레이션 최종 보고서와 에세이 답변을 한눈에 관리합니다.</p>
+      </div>
+
+      <div class="card" style="padding: 25px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h3 style="font-size: 1.4rem;"><i class="fa-solid fa-list"></i> 제출된 보고서 목록 (<span id="teacher-report-count">0</span>건)</h3>
+          <button id="btn-refresh-dashboard" class="btn btn-secondary" style="padding: 8px 16px; font-size: 1rem;">
+            <i class="fa-solid fa-rotate"></i> 새로고침
+          </button>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="dashboard-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+              <tr style="border-bottom: 2px solid var(--border-color); background-color: #F8FAFC; font-weight: bold;">
+                <th style="padding: 12px;">제출 일시</th>
+                <th style="padding: 12px;">시장 이름</th>
+                <th style="padding: 12px;">도시 정보</th>
+                <th style="padding: 12px;">최종 지표 (인구/행복/예산)</th>
+                <th style="padding: 12px;">시장 등급</th>
+                <th style="padding: 12px;">평균 점수</th>
+                <th style="padding: 12px; text-align: center;">동작</th>
+              </tr>
+            </thead>
+            <tbody id="teacher-report-list">
+              <!-- JS를 통해 데이터가 채워집니다 -->
+              <tr>
+                <td colspan="7" style="text-align: center; padding: 30px; color: var(--text-sub);">
+                  <i class="fa-solid fa-spinner fa-spin fa-lg"></i> 데이터를 불러오고 있습니다...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="ending-actions text-center" style="margin-top: 30px;">
+        <button id="btn-exit-teacher" class="btn btn-secondary">
+          <i class="fa-solid fa-house"></i> 로그인 화면으로 돌아가기
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Script tags -->
+  <script src="app.js"></script>
+</body>
+</html>
