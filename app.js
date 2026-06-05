@@ -582,6 +582,26 @@ document.addEventListener("DOMContentLoaded", () => {
     submitToTeacher();
   });
 
+  document.getElementById("btn-go-to-login").addEventListener("click", () => {
+    // 폼 초기화
+    document.getElementById("input-mayor-name").value = "";
+    document.getElementById("input-city-name").value = "";
+    
+    // 에세이 폼도 초기화
+    document.getElementById("essay-q1").value = "";
+    document.getElementById("essay-q2").value = "";
+    document.getElementById("essay-q3").value = "";
+    
+    // 버튼 상태 초기화
+    const submitBtn = document.getElementById("btn-submit-teacher");
+    submitBtn.disabled = false;
+    submitBtn.className = "btn btn-success";
+    submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> 선생님께 제출하기 📤`;
+    document.getElementById("btn-go-to-login").style.display = "none";
+    
+    goToScreen("screen-login");
+  });
+
   // 교사용 대시보드 진입 링크 (로그인 화면으로 이동)
   document.getElementById("link-teacher-dashboard").addEventListener("click", (e) => {
     e.preventDefault();
@@ -773,25 +793,17 @@ function renderPolicyList() {
   const shuffled = availablePolicies.sort(() => 0.5 - Math.random());
   gameState.currentRoundPolicies = shuffled.slice(0, 5);
   
-  // 예산 데드락 체크: 추천된 5가지 정책 중 현재 예산으로 감당할 수 있는 카드가 하나도 없는가?
-  const affordable = gameState.currentRoundPolicies.some(p => {
-    const eff = p.effects[gameState.cityType];
-    return eff.budget >= 0 || gameState.budget >= Math.abs(eff.budget);
+  // 항상 6번째 선택지로 "아무 정책도 실행하지 않기(건너뛰기)" 카드를 리스트에 추가
+  gameState.currentRoundPolicies.push({
+    id: "skip_policy",
+    name: "🚫 아무 정책도 실행하지 않기 (건너뛰기)",
+    desc: "이번 턴에는 시 예산을 아끼기 위해 어떤 정책도 실행하지 않고 그냥 넘어갑니다. (경고: 인구 감소 및 행복도 하락)",
+    effects: {
+      large: { budget: 0, population: -1.5, happiness: -15, news: "시정 공백 사태 발생! 대도시에서 아무런 정책도 결정되지 않아 시민들의 불만이 가득합니다." },
+      medium: { budget: 0, population: -1.0, happiness: -12, news: "시정 보류! 중간도시 정책이 멈춰 선 사이 인구 유출과 행복도 하락이 가속화됩니다." },
+      small: { budget: 0, population: -0.8, happiness: -10, news: "시정 멈춤! 소도시에 필요한 예산 투자가 지연되면서 소멸 위기가 가중됩니다." }
+    }
   });
-  
-  // 만약 결재 가능한 정책이 아예 없다면, 강제로 비용 0원짜리 긴급 시정 대기 카드를 한 장 끼워넣음
-  if (!affordable) {
-    gameState.currentRoundPolicies[4] = {
-      id: "emergency_policy",
-      name: "🚨 긴급 재정 절약 및 시정 조율",
-      desc: "시청 예산이 부족하여 불필요한 사업을 멈추고 공무원 업무 재배치를 통해 내실을 다집니다.",
-      effects: {
-        large: { budget: 0, population: -0.1, happiness: -3, news: "예산 부족 위기 대처! 긴급 예산 절약 조치로 긴축 재정 돌입" },
-        medium: { budget: 0, population: -0.1, happiness: -3, news: "긴급 시정 다듬기! 긴축 기정 수립을 통해 재정 건전성 확보 분투" },
-        small: { budget: 0, population: -0.1, happiness: -2, news: "소도시 긴급 긴축 시정 가동! 예산 0원짜리 시정 방어 대책 돌입" }
-      }
-    };
-  }
   
   gameState.currentRoundPolicies.forEach(policy => {
     const effect = policy.effects[gameState.cityType];
@@ -875,9 +887,22 @@ function approveSelectedPolicy() {
   
   // 예산 가능 여부 확인
   const cost = Math.abs(effect.budget);
-  if (gameState.budget < cost && effect.budget < 0) {
-    alert("시청의 예산이 부족해서 이 정책을 결재할 수 없습니다! 예산이 덜 드는 다른 정책을 골라 주세요.");
-    return;
+  if (gameState.budget < cost && effect.budget < 0 && policy.id !== "skip_policy") {
+    // 이번 라운드 정책들의 최대 비용 (skip_policy 및 emergency_policy 제외)
+    const activePolicies = gameState.currentRoundPolicies.filter(p => p.id !== "skip_policy" && p.id !== "emergency_policy");
+    const maxCost = Math.max(...activePolicies.map(p => Math.abs(p.effects[gameState.cityType].budget)));
+    
+    // 예상 마이너스 잔고가 최대 비용(대출 한도)을 넘는지 체크
+    const nextBudget = gameState.budget + effect.budget;
+    if (nextBudget < -maxCost) {
+      alert(`대출 한도 초과! 은행에서 빌릴 수 있는 최대 누적 대출 금액은 이번 라운드 정책 최대 비용인 ${maxCost}억 원입니다.\n(현재 예산: ${gameState.budget}억 원, 선택 정책 비용: ${cost}억 원)`);
+      return;
+    }
+    
+    const wantLoan = confirm(`시청 예산이 부족합니다! 은행에서 대출을 받아 마이너스 예산 상태로 정책을 강행하시겠습니까?\n\n- 부족한 금액(대출액): ${cost - gameState.budget}억 원\n- 경고: 마이너스 예산으로 임기가 끝날 경우 시장 평가 점수가 크게 감점됩니다.`);
+    if (!wantLoan) {
+      return;
+    }
   }
   
   // 연타 방지 및 결재 버튼 비활성화 시각 피드백 적용
@@ -905,7 +930,11 @@ function approveSelectedPolicy() {
   }
   
   // 실제 값 적용
-  gameState.budget = Math.max(0, gameState.budget + effect.budget);
+  if (policy.id === "skip_policy") {
+    gameState.budget = gameState.budget; // 변동 없음
+  } else {
+    gameState.budget = gameState.budget + effect.budget; // 대출 허용을 위해 Math.max(0) 제거
+  }
   gameState.population = Math.max(0.1, parseFloat((gameState.population + effect.population).toFixed(1)));
   gameState.happiness = Math.min(100, Math.max(0, gameState.happiness + effect.happiness));
   
@@ -1304,6 +1333,17 @@ function evaluateScore() {
     }
   }
   
+  // 마이너스 예산(적자)일 경우 시장 평가 점수 및 별점을 크게 감점하고 칭호를 빚더미 칭호로 변경
+  if (gameState.budget < 0) {
+    budgetScore = 0; // 예산 점수 최하점
+    popScore = Math.max(0, popScore - 15); // 적자로 인한 인구 점수 감점
+    happyScore = Math.max(0, happyScore - 15); // 적자로 인한 행복도 점수 감점
+    
+    title = "💸 빚더미에 앉은 적자 시장";
+    stars = 1.0;
+    compliment = "우리 도시의 재정 예산이 적자 상태(빚더미)로 임기가 끝났습니다. 무리한 은행 대출과 선심성 정책 지출로 인해 도시 재정이 크게 망가졌습니다! 다음에는 예산 한도 내에서 현명하게 시정을 이끌어 주세요.";
+  }
+  
   return { title, stars, compliment, popScore, happyScore, budgetScore };
 }
 
@@ -1445,6 +1485,7 @@ function submitToTeacher() {
     setTimeout(() => {
       submitBtn.className = "btn btn-secondary";
       submitBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> 제출 완료!`;
+      document.getElementById("btn-go-to-login").style.display = "inline-flex";
       alert("축하합니다! 시정 결과 보고서와 서술형 답변이 로컬에 저장되었습니다.\n(참고: app.js 상단의 GAS_WEB_APP_URL에 구글 스프레드시트 GAS 앱 URL을 입력하면 실시간 전송이 가능해집니다.)");
     }, 1500);
     return;
@@ -1462,6 +1503,7 @@ function submitToTeacher() {
     // no-cors 특성상 응답 body는 읽을 수 없으나(opaque), 전송 자체는 성공적으로 도달함
     submitBtn.className = "btn btn-secondary";
     submitBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> 제출 완료!`;
+    document.getElementById("btn-go-to-login").style.display = "inline-flex";
     alert("축하합니다! 시정 결과 보고서와 서술형 답변이 선생님의 구글 스프레드시트에 성공적으로 제출되었습니다.");
   })
   .catch(err => {
